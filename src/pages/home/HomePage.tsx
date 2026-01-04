@@ -1,10 +1,9 @@
 
 const HomePage = () => {
     return (
-        <main>
-           hello
-        </main>
-
+        <section>
+            <h1>Homepage</h1>
+        </section>
     )
 }
 
