@@ -1,10 +1,10 @@
 import {Button} from "@/components/ui/button";
-import {clientId} from "@/config/githubClientIdConfig.ts";
+import {clientId} from "@/config/githubClientIdConfig";
 
 export function ConnectGithub() {
 
     const handleClick = () => {
-        return null;
+        window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}`;
     }
 
     return (

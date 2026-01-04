@@ -9,7 +9,7 @@ export type AuthConfig = {
 export const cognitoAuthConfig = {
     authority: "https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_r46BDZLR2",
     client_id: "rpv2du5q7aqike7keqsghi3gv",
-    redirect_uri: "http://localhost:3000/",
+    redirect_uri: "http://localhost:5173/",
     response_type: "code",
     scope: "email openid phone",
 };

@@ -1,5 +1,3 @@
-"use client";
-
 import {AuthProvider} from "react-oidc-context";
 import type {AuthConfig} from "@/config/cognitoAuthConfig";
 import {cognitoAuthConfig} from "@/config/cognitoAuthConfig";

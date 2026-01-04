@@ -1,11 +1,10 @@
-"use client";
-
 import {
     NavigationMenu,
     NavigationMenuItem,
     NavigationMenuLink,
     NavigationMenuList, navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
+import {Link, useLocation} from "react-router"
 
 const links = [
     { href: "/", label: "Home" },
@@ -14,22 +13,24 @@ const links = [
     { href: "/profile", label: "Profile" },
 ];
 
-
 export default function Navigation() {
+
+    const location = useLocation();
+
     return (
         <div>
             <NavigationMenu>
                 <NavigationMenuList className="gap-2">
                     {links.map((link) => {
 
-                        const isActive = false;
+                        const isActive = location.pathname === link.href;
 
                         return (
                             <NavigationMenuItem key={link.label}>
                                 <NavigationMenuLink asChild className={navigationMenuTriggerStyle()} active={isActive}>
-                                    <p className={`font-semibold text-xl ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
+                                    <Link to={link.href} className={`font-semibold text-xl ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
                                         {link.label}
-                                    </p>
+                                    </Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
                         )

@@ -1,16 +1,14 @@
-"use client";
-
 import { useAuth } from "react-oidc-context";
 import {useConnectGithub} from "@/data/useConnectGithub";
-import {useSearchParams} from "next/navigation";
 import {useEffect} from "react";
-import {useRouter} from "next/navigation";
+import {useSearchParams, useNavigate} from "react-router-dom";
 
 export default function GithubFetch() {
 
     const auth = useAuth();
-    const searchParams = useSearchParams();
-    const router = useRouter();
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+
     const {mutate} = useConnectGithub();
 
 
@@ -23,7 +21,7 @@ export default function GithubFetch() {
                 {code, idToken},
                 {
                     onSettled: () => {
-                        router.push("/")
+                        navigate("/")
                     },
                     onError: (error) => {
                         console.error(error);
@@ -31,7 +29,7 @@ export default function GithubFetch() {
                 }
             )
         }
-    }, [router, searchParams, auth.user, mutate]);
+    }, [navigate, searchParams, auth.user, mutate]);
 
     return <div>Complete</div>;
 }

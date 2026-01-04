@@ -1,5 +1,3 @@
-"use client";
-
 import {useAuth} from "react-oidc-context";
 import {Button} from "@/components/ui/button";
 import {Avatar, AvatarImage} from "@/components/ui/avatar";

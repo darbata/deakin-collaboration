@@ -1,25 +1,46 @@
-import {createBrowserRouter, RouterProvider} from "react-router";
+import {createBrowserRouter, RouterProvider, Outlet} from "react-router";
 import HomePage from "@/pages/home/HomePage.tsx";
 import GlobalProviders from "@/components/GlobalProviders.tsx";
 import NavBar from "@/components/navbar/NavBar.tsx";
 import ProjectsPage from "@/pages/projects/ProjectPage.tsx";
+import GithubPage from "@/pages/github/GithubPage.tsx";
+
+function Layout() {
+    return (
+        <>
+            <NavBar />
+            <main>
+                <Outlet />
+            </main>
+        </>
+    )
+}
 
 const router = createBrowserRouter([
     {
         path: "/",
-        Component: HomePage,
+        element: <Layout />,
+        children: [
+            {
+                index: true, // Matches exactly "/"
+                Component: HomePage,
+            },
+            {
+                path: "projects",
+                Component: ProjectsPage,
+            },
+            {
+                path: "github",
+                Component: GithubPage
+            }
+        ],
     },
-    {
-        path: "/projects",
-        Component: ProjectsPage
-    }
-])
+]);
 
 export default function App() {
 
     return (
         <GlobalProviders>
-            <NavBar />
             <RouterProvider router={router} />
         </GlobalProviders>
     )
