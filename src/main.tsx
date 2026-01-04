@@ -1,6 +1,6 @@
+import "./index.css"
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import "./index.css"
 import {createBrowserRouter, RouterProvider} from "react-router";
 import HomePage from "./home/HomePage.tsx";
 import ProjectsPage from "./projects/ProjectPage.tsx";
@@ -23,6 +23,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-      <RouterProvider router={router}></RouterProvider>
+      <RouterProvider router={router}>
+      </RouterProvider>
   </StrictMode>,
 )
