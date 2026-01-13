@@ -1,12 +1,10 @@
 import axios from "axios";
 import {useMutation} from "@tanstack/react-query";
 
-const endpoint = "http://localhost:8080/api/connect_github";
-
 async function connectGithub(code : string, idToken : string) {
     const response = await axios.post(
-        endpoint,
-        {code: code},
+        `http://localhost:8080/api/github/oauth?code=${code}`,
+        { },
         {
             headers: {
                 Authorization: `Bearer ${idToken}`

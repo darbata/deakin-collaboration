@@ -6,7 +6,7 @@ export function FeaturedProjectsDescription() {
             </h3>
             <p className="text-muted-foreground font-medium max-w-[760px]">
                 Projects managed by DSEC execs perfect for first-time contributors. Not sure how to contribute?
-                Contact us.
+                <a href="/">Contact us</a>.
             </p>
         </div>
     )

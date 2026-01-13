@@ -82,7 +82,7 @@
 
     --border: #DBDADC;
     --input: #EBEBEB;
-    --ring: #D63384;
+    --ring: oklch(0.708 0 0);
     --sidebar: hsl(0 0% 98%);
     --sidebar-foreground: hsl(240 5.3% 26.1%);
     --sidebar-primary: hsl(240 5.9% 10%);

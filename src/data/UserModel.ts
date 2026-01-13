@@ -1,12 +1,16 @@
-export type UserModel = {
-    id: string;
+type User = {
     email: string;
     name: string;
-    githubConnected: boolean;
-    githubId: number;
-    githubUser: string;
-    githubUrl: string;
-    githubAvatarUrl: string;
-    isAdmin: boolean;
-    isMember: boolean;
+}
+
+type GithubProfile = {
+    id: number;
+    login: string;
+    url: string;
+    avatar_url: string;
+}
+
+export type UserModel = {
+    user: User;
+    githubProfile: GithubProfile | null;
 }

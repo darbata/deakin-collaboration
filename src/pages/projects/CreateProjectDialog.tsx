@@ -1,0 +1,221 @@
+import {type Dispatch, type SetStateAction, useEffect, useState} from "react";
+import {Dialog, DialogContent, DialogFooter, DialogHeader} from "@/components/ui/dialog.tsx";
+import {toast} from "sonner";
+import * as z from "zod";
+import {useForm, useStore} from "@tanstack/react-form";
+import {Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldSeparator} from "@/components/ui/field.tsx";
+import {Input} from "@/components/ui/input.tsx";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
+import axios from "axios";
+import {useAuth} from "react-oidc-context";
+import { Button } from "@/components/ui/button";
+
+const formSchema = z.object({
+    title: z.string()
+        .min(3, "Title should be descriptive.")
+        .max(40, "Keep your title's short and sweet."),
+    description: z.string()
+        .min(12, "Make sure people can understand what your project is.")
+        .max(140, "Description too long."),
+    githubRepoId: z.number()
+})
+
+type GithubRepository = {
+    id: number;
+    name: string;
+    url: string;
+    language: string;
+}
+
+export default function CreateProjectDialog({open, setOpen} : {open: boolean, setOpen: Dispatch<SetStateAction<boolean>>}) {
+
+    const auth = useAuth();
+
+    const [repos, setRepos] = useState<GithubRepository[]>([])
+
+    const form = useForm({
+        defaultValues: {
+            title: "",
+            description: "",
+            githubRepoId: 0
+        },
+        validators: {
+            onSubmit: formSchema,
+        },
+        onSubmit: async ({value}) => {
+            if (!auth.user?.access_token) {
+                toast.error("You must be logged in to create a project");
+                return;
+            }
+
+            try {
+                const payload = {
+                    title: value.title,
+                    description: value.description,
+                    repoId: value.githubRepoId
+                };
+
+                const response = await axios.post("http://localhost:8080/api/projects", payload, {
+                    headers: {
+                        Authorization: `Bearer ${auth.user.access_token}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (response.status === 200 || response.status === 201) {
+                    toast.success("Project created successfully!");
+                    form.reset();
+                    setOpen(false);
+                }
+            } catch (error) {
+                console.error("Submission error:", error);
+                toast.error("Failed to create project. Please try again.");
+            }
+        }
+    })
+
+    const isSubmitting = useStore(form.store, (state) => state.isSubmitting);
+    const canSubmit = useStore(form.store, (state) => state.canSubmit);
+
+
+
+    useEffect(() => {
+        const fetchRepos = async () => {
+            if (!auth.user?.access_token) return;
+            try {
+                const response = await axios.get("http://localhost:8080/api/github/repos", {
+                    headers: {
+                        Authorization: `Bearer ${auth.user.access_token}`
+                    }
+                });
+                setRepos(response.data);
+            } catch (error) {
+                toast.error("Failed to fetch repositories");
+                console.error(error);
+            }
+        }
+
+        if (open) {
+            fetchRepos();
+        }
+
+    }, [open, auth.user])
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+    }
+
+
+
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent>
+                <DialogHeader>
+                    Header
+                </DialogHeader>
+                    <form id="create-project-form" onSubmit={handleSubmit}  className="flex">
+                        <FieldGroup>
+                            <form.Field
+                                name="title"
+                                children={(field) => {
+                                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+                                    return (
+                                        <Field data-invalid={isInvalid}>
+                                            <FieldLabel htmlFor={field.name}>Project Title</FieldLabel>
+                                            <Input
+                                                id={field.name}
+                                                name={field.name}
+                                                value={field.state.value}
+                                                onBlur={field.handleBlur}
+                                                onChange={(e) => field.handleChange(e.target.value)}
+                                                aria-invalid={isInvalid}
+                                                placeholder="title..."
+                                                autoComplete="off"
+                                            />
+                                            {isInvalid && (
+                                                <FieldError errors={field.state.meta.errors} />
+                                            )}
+                                        </Field>
+                                    )
+                                }}
+                            />
+                            <FieldSeparator />
+                            <form.Field
+                                name="description"
+                                children={(field) => {
+                                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+                                    return (
+                                        <Field data-invalid={isInvalid}>
+                                            <FieldLabel htmlFor={field.name}>Description</FieldLabel>
+                                            <Input
+                                                id={field.name}
+                                                name={field.name}
+                                                value={field.state.value}
+                                                onBlur={field.handleBlur}
+                                                onChange={(e) => field.handleChange(e.target.value)}
+                                                aria-invalid={isInvalid}
+                                                className="min-h-32 resize-none"
+                                                placeholder="description..."
+                                                autoComplete="off"
+                                            />
+                                            <FieldDescription>
+                                                What is the goal of the project? What do you want contributors to create?
+                                            </FieldDescription>
+                                            {isInvalid && (
+                                                <FieldError errors={field.state.meta.errors} />
+                                            )}
+                                        </Field>
+                                    )
+                                }}
+                            />
+                            <FieldSeparator />
+                            <form.Field
+                                name="githubRepoId"
+                                children={(field) => {
+                                    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+                                    return (
+                                        <Field data-invalid={isInvalid}>
+                                            <FieldLabel>GitHub Repository</FieldLabel>
+                                            <Select
+                                                value={field.state.value === 0 ? "" : field.state.value.toString()}
+                                                onValueChange={(val) => field.handleChange(Number(val))}
+                                            >
+                                                <SelectTrigger id={field.name}>
+                                                    <SelectValue placeholder="Choose your repository" />
+                                                </SelectTrigger>
+                                                <SelectContent className="max-h-60 overflow-y-auto">
+                                                    {repos.length > 0 ? (
+                                                        repos.map((repo) => (
+                                                            <SelectItem key={repo.id} value={repo.id.toString()}>
+                                                                {repo.name}
+                                                            </SelectItem>
+                                                        ))
+                                                    ) : (
+                                                        <div className="p-2 text-sm text-muted-foreground">No repositories found</div>
+                                                    )}
+                                                </SelectContent>
+                                            </Select>
+                                            {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                                        </Field>
+                                    );
+                                }}
+                            />
+                        </FieldGroup>
+                    </form>
+                <DialogFooter>
+                    <Button
+                        type="submit"
+                        form="create-project-form"
+                        className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md"
+                        disabled={isSubmitting || !canSubmit}
+                    >
+                        {isSubmitting ? "Creating..." : "Create Project"}
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+
+        </Dialog>
+    )
+}

@@ -15,18 +15,19 @@ export default function Profile() {
         isError
     } = useAuthenticatedUser(auth.user?.id_token ?? "");
 
-    if (!auth.isAuthenticated) return <Button onClick={() => auth.signinRedirect()}>Sign in</Button>
+    if (!auth.isAuthenticated)
+        return <Button onClick={() => auth.signinRedirect()}>Sign in</Button>
 
     if (isLoading) return <div>loading</div> // todo: skeleton
     if (isError) return <div>error</div>
-    if (user && !user.githubConnected) return <ConnectGithub />
+    if (user && user.githubProfile == null) return <ConnectGithub />
 
     return (
-        <div className="flex gap-4">
+        <div className="flex items-center gap-2">
             <Avatar>
-                <AvatarImage src={user?.githubAvatarUrl} />
+                <AvatarImage src={user?.githubProfile?.avatar_url} />
             </Avatar>
-            <p>{user?.name}</p>
+            <p>{user?.githubProfile?.login}</p>
         </div>
     )
 }

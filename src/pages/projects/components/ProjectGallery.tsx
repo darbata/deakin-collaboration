@@ -1,58 +1,67 @@
-import { useQuery, dehydrate, QueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import {ProjectCard} from "@/pages/projects/components/ProjectCard.tsx";
+import {useAuth} from "react-oidc-context";
 
-// 1. Define types for better DX
-interface Project {
-    id: string;
-    title: string;
-    description: string;
-    // add other fields based on your API response
+
+type Page<T> = {
+    content: T[];
+    sortCol: string;
+    ascending: boolean;
+    pageSize: number;
+    pageNum: number;
 }
 
-const token = localStorage.getItem("token");
+export type Project = {
+    title: string;
+    description: string;
+    githubRepoId: number;
+    githubRepoName: string;
+    githubRepoUrl: string;
+    githubRepoLanguage: string;
+    ownerUsername: string;
+}
 
-const fetchData = async (): Promise<Project[]> => {
-    const { data } = await axios.get("http://localhost:8080/api/user/profile/", {
-        headers: {
-            Authorization: `Bearer ${token}`
+const fetchProjects = async (token : string | undefined, pageNum : number, pageSize: number): Promise<Page<Project>> => {
+    const response = await axios.get(
+        "http://localhost:8080/api/projects/",
+        {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            params: {
+                pageNum: pageNum,
+                pageSize: pageSize
+            }
         }
-    });
-    return data;
-};
+    )
 
-// 2. getServerSideProps must be in a Page file, not a standalone component file
-export async function getServerSideProps() {
-    const queryClient = new QueryClient();
-
-    await queryClient.prefetchQuery({
-        queryKey: ["projects"],
-        queryFn: fetchData,
-    });
-
-    return {
-        props: {
-            dehydratedState: dehydrate(queryClient),
-        },
-    };
+    return response.data;
 }
 
 export function ProjectGallery() {
-    // 3. The component uses the data from the cache (pre-populated by SSR)
+
+
+    const auth = useAuth();
+    const token = auth?.user?.id_token;
+
+
     const { data, isLoading, isError } = useQuery({
-        queryKey: ["projects"],
-        queryFn: fetchData,
+        queryKey: ["projects", 0],
+        queryFn: () => fetchProjects(token, 0, 50),
+
     });
 
     console.log(data);
+
 
     if (isLoading) return <div>Loading projects...</div>;
     if (isError) return <div>Error fetching projects.</div>;
 
     return (
         <div className="w-full grid gap-4 grid-cols-[repeat(auto-fit,minmax(360px,1fr))]">
-            {data?.map((project: Project) => (
-                <ProjectCard key={project.id} project={project} />
+            {data?.content.map((project: Project) => (
+                <ProjectCard key={project.githubRepoId} project={project} />
             ))}
         </div>
     );

@@ -3,16 +3,13 @@ import {DropdownMenu, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
 import {AngledBracketsIcon} from "@/components/icons/AngledBracketsIcon";
 
+// TODO: languageFilter, setLanguageFilter
 export function ProjectGalleryFilterControls({
                                                  searchFilter,
-                                                 setSearchFilter,
-                                                 languageFilter,
-                                                 setLanguageFilter
+                                                 setSearchFilter
 } : {
     searchFilter: string;
-    setSearchFilter: (s: string) => void,
-    languageFilter: string
-    setLanguageFilter: (s: string) => void
+    setSearchFilter: (s: string) => void
 } ) {
     return (
         <div className="flex gap-2">
