@@ -11,7 +11,7 @@ export function ProjectPageHeader({handleClick, activeCategory} : {handleClick :
             </div>
             {
                 activeCategory === "community" &&
-                <Button className="h-10 py-3 -x-2" onClick={handleClick}>
+                <Button className="h-10 py-3 px-2" onClick={handleClick}>
                     <PlusIcon width="16" height="16" fill="currentColor" />
                     <span>Submit Project</span>
                 </Button>
