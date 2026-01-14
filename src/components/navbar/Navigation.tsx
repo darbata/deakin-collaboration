@@ -10,7 +10,7 @@ const links = [
     { href: "/", label: "Home" },
     { href: "/projects", label: "Projects" },
     { href: "/discussions", label: "Discussions" },
-    { href: "/profile", label: "Profile" },
+    { href: "/events", label: "Events" },
 ];
 
 export default function Navigation() {

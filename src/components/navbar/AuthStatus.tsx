@@ -3,6 +3,7 @@ import {Button} from "@/components/ui/button";
 import {Avatar, AvatarImage} from "@/components/ui/avatar";
 import {useAuthenticatedUser} from "@/data/useAuthenticatedUser";
 import {ConnectGithub} from "@/components/navbar/ConnectGithub";
+import {User} from "lucide-react";
 
 
 export default function Profile() {
@@ -18,8 +19,15 @@ export default function Profile() {
     if (!auth.isAuthenticated)
         return <Button onClick={() => auth.signinRedirect()}>Sign in</Button>
 
-    if (isLoading) return <div>loading</div> // todo: skeleton
-    if (isError) return <div>error</div>
+    if (isLoading || isError) {
+        return (
+            <div className="flex items-center">
+                <User />
+            </div>
+        )
+    }
+
+
     if (user && user.githubProfile == null) return <ConnectGithub />
 
     return (

@@ -22,9 +22,9 @@ export type Project = {
     ownerUsername: string;
 }
 
-const fetchProjects = async (token : string | undefined, pageNum : number, pageSize: number): Promise<Page<Project>> => {
+const fetchCommunityProjects = async (token : string | undefined, pageNum : number, pageSize: number): Promise<Page<Project>> => {
     const response = await axios.get(
-        "http://localhost:8080/api/projects/",
+        "http://localhost:8080/api/projects/community",
         {
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -35,32 +35,54 @@ const fetchProjects = async (token : string | undefined, pageNum : number, pageS
             }
         }
     )
-
     return response.data;
 }
 
-export function ProjectGallery() {
+const fetchFeaturedProjects = async (token : string | undefined, pageNum : number, pageSize: number): Promise<Page<Project>> => {
+    const response = await axios.get(
+        "http://localhost:8080/api/projects/featured",
+        {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            params: {
+                pageNum: pageNum,
+                pageSize: pageSize
+            }
+        }
+    )
+    return response.data;
+}
 
+export function ProjectGallery({searchFilter, category} : {searchFilter: string; category: "community" | "featured"}) {
 
     const auth = useAuth();
     const token = auth?.user?.id_token;
 
-
-    const { data, isLoading, isError } = useQuery({
-        queryKey: ["projects", 0],
-        queryFn: () => fetchProjects(token, 0, 50),
-
+    const { data } = useQuery({
+        queryKey: ["projects", category, 0],
+        queryFn: () => category === "featured"
+            ? fetchFeaturedProjects(token, 0, 50)
+            : fetchCommunityProjects(token, 0, 50),
+        enabled: !!token
     });
 
-    console.log(data);
+    if (data == undefined || data?.content.length <= 0) return <div></div>
 
-
-    if (isLoading) return <div>Loading projects...</div>;
-    if (isError) return <div>Error fetching projects.</div>;
+    const filtered: Project[] = data.content?.filter(
+        project => {
+            return (
+                project.ownerUsername.toLowerCase().includes(searchFilter.toLowerCase()) ||
+                project.title.toLowerCase().includes(searchFilter.toLowerCase()) ||
+                project.description.toLowerCase().includes(searchFilter.toLowerCase()) ||
+                project.githubRepoLanguage.toLowerCase().includes(searchFilter.toLowerCase())
+            );
+        }
+    )
 
     return (
         <div className="w-full grid gap-4 grid-cols-[repeat(auto-fit,minmax(360px,1fr))]">
-            {data?.content.map((project: Project) => (
+            {filtered.map((project: Project) => (
                 <ProjectCard key={project.githubRepoId} project={project} />
             ))}
         </div>

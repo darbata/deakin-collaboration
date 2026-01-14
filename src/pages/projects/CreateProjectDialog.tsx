@@ -77,8 +77,6 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
     const isSubmitting = useStore(form.store, (state) => state.isSubmitting);
     const canSubmit = useStore(form.store, (state) => state.canSubmit);
 
-
-
     useEffect(() => {
         const fetchRepos = async () => {
             if (!auth.user?.access_token) return;
@@ -96,7 +94,7 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
         }
 
         if (open) {
-            fetchRepos();
+            void fetchRepos();
         }
 
     }, [open, auth.user])
@@ -104,17 +102,12 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        form.handleSubmit();
+        void form.handleSubmit();
     }
-
-
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent>
-                <DialogHeader>
-                    Header
-                </DialogHeader>
                     <form id="create-project-form" onSubmit={handleSubmit}  className="flex">
                         <FieldGroup>
                             <form.Field
@@ -131,7 +124,6 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
                                                 onBlur={field.handleBlur}
                                                 onChange={(e) => field.handleChange(e.target.value)}
                                                 aria-invalid={isInvalid}
-                                                placeholder="title..."
                                                 autoComplete="off"
                                             />
                                             {isInvalid && (
@@ -157,7 +149,6 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
                                                 onChange={(e) => field.handleChange(e.target.value)}
                                                 aria-invalid={isInvalid}
                                                 className="min-h-32 resize-none"
-                                                placeholder="description..."
                                                 autoComplete="off"
                                             />
                                             <FieldDescription>
@@ -208,7 +199,7 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
                     <Button
                         type="submit"
                         form="create-project-form"
-                        className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md"
+                        className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md w-full"
                         disabled={isSubmitting || !canSubmit}
                     >
                         {isSubmitting ? "Creating..." : "Create Project"}

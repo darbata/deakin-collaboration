@@ -4,6 +4,8 @@ import GlobalProviders from "@/components/GlobalProviders.tsx";
 import NavBar from "@/components/navbar/NavBar.tsx";
 import ProjectsPage from "@/pages/projects/ProjectPage.tsx";
 import GithubPage from "@/pages/github/GithubPage.tsx";
+import DiscussionsPage from "@/pages/discussions/DiscussionPage.tsx";
+import EventsPage from "@/pages/events/EventsPage.tsx";
 
 function Layout() {
     return (
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
             {
                 path: "github",
                 Component: GithubPage
+            },
+            {
+                path: "discussions",
+                Component: DiscussionsPage
+            },
+            {
+                path: "events",
+                Component: EventsPage
             }
         ],
     },
