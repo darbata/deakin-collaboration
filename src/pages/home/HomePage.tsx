@@ -1,4 +1,4 @@
-import {Card, CardContent, CardHeader} from "@/components/ui/card.tsx";
+import {Card, CardContent} from "@/components/ui/card.tsx";
 import {Accordion, AccordionContent, AccordionTrigger,} from "@/components/ui/accordion.tsx";
 import {AccordionItem} from "@radix-ui/react-accordion";
 import {Button} from "@/components/ui/button.tsx";
@@ -31,7 +31,7 @@ type FrequentlyAskedQuestion = {
 const faq: FrequentlyAskedQuestion[] = [
     {
         question: "What is Basecamp?",
-        answer: "Basecamp is a web app made by Deaking Software Engineering Club (DSEC), built to encourage" +
+        answer: "Basecamp is a web app made by Deakin Software Engineering Club (DSEC), built to encourage" +
             "collaboration among students at Deakin. Users will gain the opportunity to build their skills and " +
             "resume with real-world projects."
     },
