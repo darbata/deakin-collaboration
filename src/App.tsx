@@ -6,6 +6,7 @@ import ProjectsPage from "@/pages/projects/ProjectPage.tsx";
 import GithubPage from "@/pages/github/GithubPage.tsx";
 import DiscussionsPage from "@/pages/discussions/DiscussionPage.tsx";
 import EventsPage from "@/pages/events/EventsPage.tsx";
+import Footer from "@/components/Footer.tsx"
 
 function Layout() {
     return (
@@ -14,6 +15,7 @@ function Layout() {
             <main>
                 <Outlet />
             </main>
+            <Footer />
         </>
     )
 }

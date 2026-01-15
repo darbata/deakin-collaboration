@@ -8,9 +8,12 @@ export function ConnectGithub() {
     }
 
     return (
-        <Button onClick={handleClick}>
-            Connect Github
-        </Button>
+        <div className="flex justify-end">
+            <Button onClick={handleClick}>
+                Connect Github
+            </Button>
+        </div>
+
     )
 
 }
