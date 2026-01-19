@@ -1,6 +1,6 @@
 import {Input} from "@/components/ui/input";
 
-export function ProjectGalleryFilterControls({
+export function SearchFilter({
                                                  searchFilter,
                                                  setSearchFilter,
 } : {

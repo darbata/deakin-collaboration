@@ -6,15 +6,15 @@ import CreateProjectDialog from "@/pages/projects/CreateProjectDialog.tsx";
 
 export default function ProjectsPage() {
     const [open, setOpen] = useState(false);
-    const [activeCategory, setActiveCategory] = useState<"featured" | "community">("featured");
+    const [activeCategory, setActiveCategory] = useState("featured");
     const [searchFilter, setSearchFilter] = useState("");
 
     const handleSubmitProjectBtnClick = () => {
         setOpen(!open)
     }
 
-    function handleSetCategory(category : "featured" | "community") {
-        setActiveCategory(category);
+    function handleSetCategory(s : string) {
+        setActiveCategory(s);
     }
 
     return (

@@ -54,7 +54,7 @@ const fetchFeaturedProjects = async (token : string | undefined, pageNum : numbe
     return response.data;
 }
 
-export function ProjectGallery({searchFilter, category} : {searchFilter: string; category: "community" | "featured"}) {
+export function ProjectGallery({searchFilter, category} : {searchFilter: string; category: string}) {
 
     const auth = useAuth();
     const token = auth?.user?.id_token;

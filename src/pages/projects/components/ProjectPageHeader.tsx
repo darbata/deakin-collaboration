@@ -1,7 +1,7 @@
 import {Button} from "@/components/ui/button";
 import PlusIcon from "@/components/icons/PlusIcon";
 
-export function ProjectPageHeader({handleClick, activeCategory} : {handleClick : () => void, activeCategory: "featured" | "community"}){
+export function ProjectPageHeader({handleClick, activeCategory} : {handleClick : () => void, activeCategory: string}){
 
     return (
         <div className="flex justify-between items-center">

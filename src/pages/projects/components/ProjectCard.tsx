@@ -13,12 +13,12 @@ export function ProjectCard({project} : projectProps) {
     return (
         <Card className="px-4 py-4 w-full border border-border rounded-lg">
             <CardHeader className="flex justify-between items-center pr-4">
-                <p className="text-muted-foreground text-xl">{project.ownerUsername}</p>
+                <p className="text-muted-foreground text-xl truncate w-[60%]">{project.ownerUsername}</p>
                 <LanguageTag language={project.githubRepoLanguage} fill="#3178C6" textColour="#FFFFFF" />
             </CardHeader>
             <CardContent className="flex flex-col gap-1">
-                <h4 className="font-semibold text-xl">{project.title}</h4>
-                <p className="text-muted-foreground">{project.description}</p>
+                <h4 className="font-semibold text-xl truncate">{project.title}</h4>
+                <p className="text-muted-foreground truncate">{project.description}</p>
             </CardContent>
             <CardFooter className="flex gap-2">
                 <Button className="h-fit cursor-pointer w-[50%] bg-background text-foreground hover:bg-muted border border-foreground">
