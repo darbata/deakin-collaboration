@@ -2,18 +2,23 @@ import {useState} from "react";
 import {type Category, CategorySelector} from "@/pages/projects/components/CategorySelector.tsx";
 import {GlobeIcon, LucideGraduationCap} from "lucide-react";
 import {SearchFilter} from "@/pages/projects/components/SearchFilter.tsx";
+import {CategorySectionDescription} from "@/pages/projects/components/CategorySectionDescription.tsx";
 
 
 const categories: Category[] = [
     {
         identifier: "deakin-units",
         icon: <LucideGraduationCap />,
-        label: "Deakin Units",
+        buttonLabel: "Deakin Units",
+        sectionTitle: "Deakin Unit Topics",
+        sectionDescription: "Science and Information Technology (SIT) topics to find conversations related to these classes.",
     },
     {
         identifier: "community",
         icon: <GlobeIcon />,
-        label: "Community",
+        buttonLabel: "Community",
+        sectionTitle: "Community Topics",
+        sectionDescription: "See what others are talking about outside of just university.",
     },
 ]
 
@@ -29,6 +34,8 @@ export default function DiscussionsPage() {
             </div>
             <CategorySelector categories={categories} activeCategory={activeCategory} handleSet={setActiveCategory} />
             <SearchFilter searchFilter={searchFilter} setSearchFilter={setSearchFilter} />
+            {activeCategory == categories[0].identifier && <CategorySectionDescription category={categories[0]} />}
+            {activeCategory == categories[1].identifier && <CategorySectionDescription category={categories[1]} />}
         </div>
     )
 }

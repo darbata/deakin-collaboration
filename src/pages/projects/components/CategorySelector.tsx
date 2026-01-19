@@ -4,7 +4,9 @@ import {CategoryOption} from "@/pages/projects/components/CategoryOption.tsx";
 export type Category = {
     icon : JSX.Element;
     identifier: string;
-    label: string;
+    buttonLabel: string;
+    sectionTitle: string;
+    sectionDescription: string;
 }
 
 
