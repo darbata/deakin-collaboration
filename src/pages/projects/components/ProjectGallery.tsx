@@ -2,15 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import {ProjectCard} from "@/pages/projects/components/ProjectCard.tsx";
 import {useAuth} from "react-oidc-context";
-
-
-type Page<T> = {
-    content: T[];
-    sortCol: string;
-    ascending: boolean;
-    pageSize: number;
-    pageNum: number;
-}
+import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
+import type {Page} from "@/types/page.ts";
 
 export type Project = {
     title: string;
@@ -24,7 +17,7 @@ export type Project = {
 
 const fetchCommunityProjects = async (token : string | undefined, pageNum : number, pageSize: number): Promise<Page<Project>> => {
     const response = await axios.get(
-        "http://localhost:8080/api/projects/community",
+        `${apiBaseUrl}/projects/community`,
         {
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -40,7 +33,7 @@ const fetchCommunityProjects = async (token : string | undefined, pageNum : numb
 
 const fetchFeaturedProjects = async (token : string | undefined, pageNum : number, pageSize: number): Promise<Page<Project>> => {
     const response = await axios.get(
-        "http://localhost:8080/api/projects/featured",
+        `${apiBaseUrl}/projects/featured`,
         {
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -64,7 +57,8 @@ export function ProjectGallery({searchFilter, category} : {searchFilter: string;
         queryFn: () => category === "featured"
             ? fetchFeaturedProjects(token, 0, 50)
             : fetchCommunityProjects(token, 0, 50),
-        enabled: !!token
+        enabled: !!token,
+        staleTime: 5*50*1000
     });
 
     if (data == undefined || data?.content.length <= 0) return <div></div>

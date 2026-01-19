@@ -7,6 +7,7 @@ import GithubPage from "@/pages/github/GithubPage.tsx";
 import DiscussionsPage from "@/pages/discussions/DiscussionPage.tsx";
 import EventsPage from "@/pages/events/EventsPage.tsx";
 import Footer from "@/components/Footer.tsx"
+import {TopicDetailsPage} from "@/pages/discussions/TopicDetailsPage.tsx";
 
 function Layout() {
     return (
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
             {
                 path: "discussions",
                 Component: DiscussionsPage
+            },
+            {
+                path: "discussions/:topic",
+                Component: TopicDetailsPage
             },
             {
                 path: "events",
