@@ -6,10 +6,11 @@ export type AuthConfig = {
     scope: string;
 }
 
+// this is fine to have on client side
 export const cognitoAuthConfig = {
-    authority: "https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_r46BDZLR2",
-    client_id: "rpv2du5q7aqike7keqsghi3gv",
-    redirect_uri: "http://localhost:5173/",
+    authority: "https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_BCgTuKJeO",
+    client_id: "k2s1qkeil1sl3g6t6fkafhu28",
+    redirect_uri: "https://d84l1y8p4kdic.cloudfront.net",
     response_type: "code",
-    scope: "email openid phone",
+    scope: "phone openid email profile",
 };

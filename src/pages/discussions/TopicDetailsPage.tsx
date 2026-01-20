@@ -3,12 +3,19 @@ import axios from "axios";
 import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
 import {useQuery} from "@tanstack/react-query";
 import {useAuth} from "react-oidc-context";
+import type {User} from "@/data/UserModel.ts";
 
+export type Discussion = {
+    content: string;
+    createdAt: Date;
+    discussions: Discussion[];
+    user: User;
+}
 
 const fetchTopicDetails = async (
     token: string | undefined,
-    topic: string
-): Promise<any> => {
+    topic: string | undefined,
+): Promise<Discussion[]> => {
     const response = await axios.get(
         `${apiBaseUrl}/discussions/${topic}`,
         {
@@ -32,6 +39,7 @@ export function TopicDetailsPage() {
         staleTime: 5*50*1000
     });
 
+    console.log(data);
 
     return (
         <div>{topic}</div>
