@@ -52,9 +52,6 @@ export function ProjectGallery({searchFilter, category} : {searchFilter: string;
         staleTime: 5*50*1000
     });
 
-    console.log(data)
-
-
     if (data == undefined || data?.content.length <= 0) return <div></div>
 
     const filtered: Project[] = data.content?.filter(

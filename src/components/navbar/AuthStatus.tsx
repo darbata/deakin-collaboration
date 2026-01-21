@@ -18,8 +18,6 @@ export default function Profile() {
 
     const auth = useAuth();
 
-    console.log(auth)
-
     const {
         data: user,
         isLoading,
@@ -41,10 +39,6 @@ export default function Profile() {
         const url = `https://github.com/login/oauth/authorize?client_id=${clientId}`
         window.location.href = url
     }
-
-    console.log(user);
-
-
 
     return (
         <DropdownMenu>
