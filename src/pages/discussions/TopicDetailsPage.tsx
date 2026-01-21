@@ -3,19 +3,13 @@ import axios from "axios";
 import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
 import {useQuery} from "@tanstack/react-query";
 import {useAuth} from "react-oidc-context";
-import type {User} from "@/data/UserModel.ts";
-
-export type Discussion = {
-    content: string;
-    createdAt: Date;
-    discussions: Discussion[];
-    user: User;
-}
+import type {TopicDetails} from "@/types/TopicDetails.ts";
+import {DiscussionNode} from "@/pages/discussions/components/DiscussionNode.tsx";
 
 const fetchTopicDetails = async (
     token: string | undefined,
     topic: string | undefined,
-): Promise<Discussion[]> => {
+): Promise<TopicDetails> => {
     const response = await axios.get(
         `${apiBaseUrl}/discussions/${topic}`,
         {
@@ -39,9 +33,24 @@ export function TopicDetailsPage() {
         staleTime: 5*50*1000
     });
 
-    console.log(data);
+    if (!data) return <>div</>
+
+    const topicDetails = data.unitTopic;
+    const discussions = data.discussions;
+
+    console.log(discussions);
 
     return (
-        <div>{topic}</div>
+        <div className="flex flex-col">
+            <div className="flex flex-col">
+                <span className="font-semibold text-xl">{topic}</span>
+                <span className="text-muted-foreground">{topicDetails.description}</span>
+            </div>
+            {discussions.map((discussion) => (
+                <DiscussionNode key={discussion.content} discussion={discussion}></DiscussionNode>
+            ))}
+        </div>
+
+
     )
 }

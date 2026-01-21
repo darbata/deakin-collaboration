@@ -1,7 +1,7 @@
 import {Button} from "@/components/ui/button";
 import {Github, MessageSquare} from "lucide-react";
 import {LanguageTag} from "@/pages/projects/components/LanguageTag.tsx";
-import type {Project} from "@/pages/projects/components/ProjectGallery.tsx";
+import type {Project} from "@/types/Project.ts";
 import {Card, CardContent, CardFooter, CardHeader} from "@/components/ui/card.tsx";
 
 
@@ -13,7 +13,7 @@ export function ProjectCard({project} : projectProps) {
     return (
         <Card className="px-4 py-4 w-full border border-border rounded-lg">
             <CardHeader className="flex justify-between items-center pr-4">
-                <p className="text-muted-foreground text-xl truncate w-[60%]">{project.ownerUsername}</p>
+                <p className="text-muted-foreground text-xl truncate w-[60%]">{project.ownerDisplayName}</p>
                 <LanguageTag language={project.repo.language} fill="#3178C6" textColour="#FFFFFF" />
             </CardHeader>
             <CardContent className="flex flex-col gap-1">

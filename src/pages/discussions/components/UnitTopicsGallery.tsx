@@ -6,18 +6,15 @@ import type {Page} from "@/types/page.ts";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {useNavigate} from "react-router-dom";
+import type {UnitTopic} from "@/types/UnitTopic.ts";
 
 const redirectToUnitSite = (url : string) => {
     window.location.href = url;
 }
 
-export type Unit = {
-    description: string;
-    unitCode: string;
-    unitSiteUrl: string;
-}
 
-const fetchUnitTopics = async (token : string | undefined, pageNum : number, pageSize: number): Promise<Page<Unit>> => {
+
+const fetchUnitTopics = async (token : string | undefined, pageNum : number, pageSize: number): Promise<Page<UnitTopic>> => {
 
     const response = await axios.get(
         `${apiBaseUrl}/discussions/units`,
