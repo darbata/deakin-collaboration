@@ -4,14 +4,15 @@ import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
 import {useQuery} from "@tanstack/react-query";
 import {useAuth} from "react-oidc-context";
 import type {TopicDetails} from "@/types/TopicDetails.ts";
-import {DiscussionNode} from "@/pages/discussions/components/DiscussionNode.tsx";
+import {RootDiscussionCard} from "@/pages/discussions/components/RootDiscussionCard.tsx";
+import {Separator} from "@/components/ui/separator.tsx";
 
 const fetchTopicDetails = async (
     token: string | undefined,
     topic: string | undefined,
 ): Promise<TopicDetails> => {
     const response = await axios.get(
-        `${apiBaseUrl}/discussions/${topic}`,
+        `${apiBaseUrl}/topics/${topic}`,
         {
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -21,7 +22,7 @@ const fetchTopicDetails = async (
     return response.data;
 }
 
-export function TopicDetailsPage() {
+export function UnitDetailsPage() {
     const {topic} = useParams();
     const auth = useAuth();
     const token = auth.user?.id_token;
@@ -42,15 +43,16 @@ export function TopicDetailsPage() {
 
     return (
         <div className="flex flex-col">
-            <div className="flex flex-col">
-                <span className="font-semibold text-xl">{topic}</span>
+            <div className="flex flex-col mb-4">
+                <span className="font-bold text-2xl">{topic}</span>
                 <span className="text-muted-foreground">{topicDetails.description}</span>
+                <Separator className="mt-2"  />
             </div>
-            {discussions.map((discussion) => (
-                <DiscussionNode key={discussion.content} discussion={discussion}></DiscussionNode>
-            ))}
+            <div className="flex flex-col gap-2">
+                {discussions.map((discussion) => (
+                    <RootDiscussionCard key={discussion.content} discussion={discussion}></RootDiscussionCard>
+                ))}
+            </div>
         </div>
-
-
     )
 }

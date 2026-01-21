@@ -45,8 +45,8 @@ export default function Profile() {
             <DropdownMenuTrigger asChild>
                 <Button variant="outline">
                     <div className="flex items-center gap-2">
-                        <Avatar className="flex justify-center items-center">
-                            <AvatarImage className="w-6 h-6" src={user?.avatarUrl} />
+                        <Avatar className="size-6">
+                            <AvatarImage src={user?.avatarUrl} className="object-cover" />
                         </Avatar>
                         <span>{user?.displayName}</span>
                     </div>

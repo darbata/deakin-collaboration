@@ -2,7 +2,7 @@ import axios from "axios";
 import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
 import {useAuth} from "react-oidc-context";
 import {useQuery} from "@tanstack/react-query";
-import type {Page} from "@/types/page.ts";
+import type {Page} from "@/types/Page.ts";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {useNavigate} from "react-router-dom";
@@ -12,12 +12,10 @@ const redirectToUnitSite = (url : string) => {
     window.location.href = url;
 }
 
-
-
 const fetchUnitTopics = async (token : string | undefined, pageNum : number, pageSize: number): Promise<Page<UnitTopic>> => {
 
     const response = await axios.get(
-        `${apiBaseUrl}/discussions/units`,
+        `${apiBaseUrl}/topics/units`,
         {
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -31,7 +29,7 @@ const fetchUnitTopics = async (token : string | undefined, pageNum : number, pag
     return response.data;
 }
 
-export default function UnitTopicsGallery() {
+export default function UnitTopicsGallery({searchFilter} : {searchFilter: string}) {
 
     const auth = useAuth();
     const token = auth?.user?.id_token;
@@ -40,7 +38,7 @@ export default function UnitTopicsGallery() {
 
 
     const { data } = useQuery({
-        queryKey: ["discussions", 0],
+        queryKey: ["discussions"],
         queryFn: () => fetchUnitTopics(token, 0, 50),
         enabled: !!token,
         staleTime: 5*50*1000
@@ -50,7 +48,13 @@ export default function UnitTopicsGallery() {
 
     const units = data.content;
 
-    console.log(units)
+
+    const filtered = units.filter(unit => {
+        return (
+            unit.unitCode.toLowerCase().includes(searchFilter.toLowerCase()) ||
+            unit.description.toLowerCase().includes(searchFilter.toLowerCase())
+        )
+    })
 
     return (
         <Table>
@@ -61,7 +65,7 @@ export default function UnitTopicsGallery() {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {units.map((unit) => (
+                {filtered.map((unit) => (
                     <TableRow>
                         <TableCell>{unit.unitCode}</TableCell>
                         <TableCell>{unit.description}</TableCell>

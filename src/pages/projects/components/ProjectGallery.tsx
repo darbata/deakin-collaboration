@@ -2,11 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import {useAuth} from "react-oidc-context";
 import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
-import type {Page} from "@/types/page.ts";
+import type {Page} from "@/types/Page.ts";
 import type {Project} from "@/types/Project.ts";
 import {ProjectCard} from "@/pages/projects/components/ProjectCard.tsx";
 
-const fetchCommunityProjects = async (token : string | undefined, pageNum : number, pageSize: number): Promise<Page<any>> => {
+const fetchCommunityProjects = async (token : string | undefined, pageNum : number, pageSize: number): Promise<Page<Project>> => {
     const response = await axios.get(
         `${apiBaseUrl}/projects/community`,
         {
