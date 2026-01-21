@@ -1,10 +1,10 @@
 import axios from "axios";
-import type {UserModel} from "@/data/UserModel";
 import {useQuery} from "@tanstack/react-query";
+import type {User} from "@/data/User.ts";
 
 const endpoint = "http://localhost:8080/api/auth";
 
-async function fetchAuthenticatedUser(idToken : string) : Promise<UserModel> {
+async function fetchAuthenticatedUser(idToken : string) : Promise<User> {
     const response = await axios.get(endpoint, {
         headers: {Authorization: `Bearer ${idToken}`}
     })

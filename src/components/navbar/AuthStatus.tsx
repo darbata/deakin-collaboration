@@ -2,13 +2,23 @@ import {useAuth} from "react-oidc-context";
 import {Button} from "@/components/ui/button";
 import {Avatar, AvatarImage} from "@/components/ui/avatar";
 import {useAuthenticatedUser} from "@/data/useAuthenticatedUser";
-import {ConnectGithub} from "@/components/navbar/ConnectGithub";
 import {User} from "lucide-react";
+import {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuItem
+} from "@/components/ui/dropdown-menu.tsx";
+import {signOutConfig} from "@/config/cognitoAuthConfig.ts";
+import {clientId} from "@/config/githubClientIdConfig.ts";
 
 
 export default function Profile() {
 
     const auth = useAuth();
+
+    console.log(auth)
 
     const {
         data: user,
@@ -27,15 +37,46 @@ export default function Profile() {
         )
     }
 
+    const redirectGithubAuth = () => {
+        const url = `https://github.com/login/oauth/authorize?client_id=${clientId}`
+        window.location.href = url
+    }
 
-    if (user && user.githubProfile == null) return <ConnectGithub />
+    console.log(user);
+
+
 
     return (
-        <div className="flex items-center gap-2">
-            <Avatar>
-                <AvatarImage src={user?.githubProfile?.avatar_url} />
-            </Avatar>
-            <p>{user?.githubProfile?.login}</p>
-        </div>
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                    <div className="flex items-center gap-2">
+                        <Avatar className="flex justify-center items-center">
+                            <AvatarImage className="w-6 h-6" src={user?.avatarUrl} />
+                        </Avatar>
+                        <span>{user?.displayName}</span>
+                    </div>
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+                <DropdownMenuLabel>
+                    <DropdownMenuItem>
+                        Profile
+                    </DropdownMenuItem>
+                    {
+                        user?.githubConnected
+                        ? <DropdownMenuItem>Disconnect GitHub</DropdownMenuItem>
+                        : <DropdownMenuItem onClick={redirectGithubAuth}>Connect GitHub</DropdownMenuItem>
+                    }
+                    <DropdownMenuItem
+                        onClick={() => auth.signoutRedirect({
+                            extraQueryParams: signOutConfig
+                        })}
+                    >
+                        Sign Out
+                    </DropdownMenuItem>
+                </DropdownMenuLabel>
+            </DropdownMenuContent>
+        </DropdownMenu>
     )
 }

@@ -1,5 +1,5 @@
 import {type Dispatch, type SetStateAction, useEffect, useState} from "react";
-import {Dialog, DialogContent, DialogFooter, DialogHeader} from "@/components/ui/dialog.tsx";
+import {Dialog, DialogContent, DialogFooter} from "@/components/ui/dialog.tsx";
 import {toast} from "sonner";
 import * as z from "zod";
 import {useForm, useStore} from "@tanstack/react-form";
@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import axios from "axios";
 import {useAuth} from "react-oidc-context";
 import { Button } from "@/components/ui/button";
+import type {GithubRepository} from "@/types/GithubRepository.ts";
 
 const formSchema = z.object({
     title: z.string()
@@ -19,13 +20,6 @@ const formSchema = z.object({
         .max(140, "Description too long."),
     githubRepoId: z.number()
 })
-
-type GithubRepository = {
-    id: number;
-    name: string;
-    url: string;
-    language: string;
-}
 
 export default function CreateProjectDialog({open, setOpen} : {open: boolean, setOpen: Dispatch<SetStateAction<boolean>>}) {
 

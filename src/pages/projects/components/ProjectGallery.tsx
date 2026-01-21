@@ -1,21 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import {ProjectCard} from "@/pages/projects/components/ProjectCard.tsx";
 import {useAuth} from "react-oidc-context";
 import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
 import type {Page} from "@/types/page.ts";
+import type {Project} from "@/types/Project.ts";
+import {ProjectCard} from "@/pages/projects/components/ProjectCard.tsx";
 
-export type Project = {
-    title: string;
-    description: string;
-    githubRepoId: number;
-    githubRepoName: string;
-    githubRepoUrl: string;
-    githubRepoLanguage: string;
-    ownerUsername: string;
-}
-
-const fetchCommunityProjects = async (token : string | undefined, pageNum : number, pageSize: number): Promise<Page<Project>> => {
+const fetchCommunityProjects = async (token : string | undefined, pageNum : number, pageSize: number): Promise<Page<any>> => {
     const response = await axios.get(
         `${apiBaseUrl}/projects/community`,
         {
@@ -61,15 +52,18 @@ export function ProjectGallery({searchFilter, category} : {searchFilter: string;
         staleTime: 5*50*1000
     });
 
+    console.log(data)
+
+
     if (data == undefined || data?.content.length <= 0) return <div></div>
 
     const filtered: Project[] = data.content?.filter(
         project => {
             return (
-                project.ownerUsername.toLowerCase().includes(searchFilter.toLowerCase()) ||
+                project.ownerDisplayName.toLowerCase().includes(searchFilter.toLowerCase()) ||
                 project.title.toLowerCase().includes(searchFilter.toLowerCase()) ||
                 project.description.toLowerCase().includes(searchFilter.toLowerCase()) ||
-                project.githubRepoLanguage.toLowerCase().includes(searchFilter.toLowerCase())
+                project.repo.language.toLowerCase().includes(searchFilter.toLowerCase())
             );
         }
     )
@@ -77,7 +71,7 @@ export function ProjectGallery({searchFilter, category} : {searchFilter: string;
     return (
         <div className="w-full grid gap-4 grid-cols-[repeat(auto-fit,minmax(360px,1fr))]">
             {filtered.map((project: Project) => (
-                <ProjectCard key={project.githubRepoId} project={project} />
+                <ProjectCard key={project.repo.id} project={project} />
             ))}
         </div>
     );

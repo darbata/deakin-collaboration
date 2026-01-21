@@ -14,7 +14,7 @@ export function ProjectCard({project} : projectProps) {
         <Card className="px-4 py-4 w-full border border-border rounded-lg">
             <CardHeader className="flex justify-between items-center pr-4">
                 <p className="text-muted-foreground text-xl truncate w-[60%]">{project.ownerUsername}</p>
-                <LanguageTag language={project.githubRepoLanguage} fill="#3178C6" textColour="#FFFFFF" />
+                <LanguageTag language={project.repo.language} fill="#3178C6" textColour="#FFFFFF" />
             </CardHeader>
             <CardContent className="flex flex-col gap-1">
                 <h4 className="font-semibold text-xl truncate">{project.title}</h4>
