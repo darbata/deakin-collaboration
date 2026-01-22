@@ -39,11 +39,6 @@ export default function DiscussionsPage() {
             {activeCategory == categories[1].identifier && <CategorySectionDescription category={categories[1]} />}
 
             {activeCategory == categories[0].identifier && <UnitTopicsGallery searchFilter={searchFilter} />}
-
-
-
-
-
         </div>
     )
 }

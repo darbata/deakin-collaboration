@@ -40,8 +40,6 @@ export function DiscussionThreadPage() {
     if (!data) return <>div</>
 
     return (
-        <DiscussionNode discussion={data.rootDiscussion}>
-
-        </DiscussionNode>
+        <DiscussionNode discussion={data.rootDiscussion} depth={1} />
     )
 }
