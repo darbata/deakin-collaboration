@@ -18,7 +18,7 @@ const collaborationCards : CollaborationCard[] = [
         supporting: "See what others are talking about, whether you want to gain insight into your next unit or ask for help."
     },
     {
-        main: "Melbourne Events",
+        main: "Events",
         supporting: "View events that others are hosting or planning to attend. This way you can stay in the loop, or even form your next hackathon team!"
     }
 ]
@@ -62,12 +62,11 @@ export default function HomePage () {
     return (
         <>
             <section className="flex flex-col items-center justify-center gap-2 mt-[12vh]">
-                <span className="border border-border text-foreground rounded px-4">Open Source Student Collaboration</span>
-                <h1 className="text-[clamp(2.5rem,8vw-1rem,4.5rem)] font-bold text-center text-foreground">
-                    Build the future together
+                <h1 className="text-[clamp(2.5rem,9vw-1rem,5rem)] font-bold text-center text-foreground">
+                    Basecamp
                 </h1>
                 <span className="text-[clamp(1rem,1vw+0.5rem,1.25rem)] text-center leading-tight text-muted-foreground text-pretty w-[60%]">
-                    Connect with students, contribute to open-source projects, and grow your skills through real collaboration
+                    Go beyond OnTrack, build something together and create stories you can share from your University journey.
                 </span>
                 <div className="flex gap-8 mt-8">
                     <Button variant="outline" className="aspect-[8/2]">Learn More</Button>

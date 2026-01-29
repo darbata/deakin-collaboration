@@ -10,6 +10,7 @@ import axios from "axios";
 import {useAuth} from "react-oidc-context";
 import { Button } from "@/components/ui/button";
 import type {GithubRepository} from "@/types/GithubRepository.ts";
+import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
 
 const formSchema = z.object({
     title: z.string()
@@ -49,7 +50,7 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
                     repoId: value.githubRepoId
                 };
 
-                const response = await axios.post("http://localhost:8080/api/projects", payload, {
+                const response = await axios.post(`${apiBaseUrl}/projects/community`, payload, {
                     headers: {
                         Authorization: `Bearer ${auth.user.access_token}`,
                         "Content-Type": "application/json"

@@ -5,6 +5,7 @@ import axios from "axios";
 import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
 import type {Discussion} from "@/types/Discussion.ts";
 import {DiscussionNode} from "@/pages/discussions/components/DiscussionNode.tsx";
+import {useState} from "react";
 
 export type DiscussionThread = {
     rootDiscussion: Discussion
@@ -26,6 +27,7 @@ const fetchDiscussionThread = async (
 }
 
 export function DiscussionThreadPage() {
+
     const {discussionId} = useParams();
     const auth = useAuth();
     const token = auth.user?.id_token;

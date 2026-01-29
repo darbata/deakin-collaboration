@@ -3,5 +3,9 @@ export type GithubRepository = {
     name: string;
     url: string;
     language: string;
+    openTickets: number;
+    contributors: number;
+    stars: number;
+    pushedAt: number;
 }
 

@@ -1,7 +1,7 @@
 import {ProjectPageHeader} from "@/pages/projects/components/ProjectPageHeader.tsx";
 import {ProjectGallerySection} from "@/pages/projects/components/ProjectGallerySection.tsx";
 import {useState} from "react";
-import CreateProjectDialog from "@/pages/projects/CreateProjectDialog.tsx";
+import CreateProjectDialog from "@/pages/projects/components/CreateProjectDialog.tsx";
 
 
 export default function ProjectsPage() {
@@ -13,12 +13,13 @@ export default function ProjectsPage() {
         setOpen(!open)
     }
 
+
     function handleSetCategory(s : string) {
         setActiveCategory(s);
     }
 
     return (
-        <section className="flex flex-col gap-2">
+        <section className="flex flex-col gap-4">
             <ProjectPageHeader handleClick={handleSubmitProjectBtnClick} activeCategory={activeCategory} />
             <ProjectGallerySection
                 activeCategory={activeCategory}

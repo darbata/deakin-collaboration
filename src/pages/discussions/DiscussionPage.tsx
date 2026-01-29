@@ -8,10 +8,10 @@ import UnitTopicsGallery from "@/pages/discussions/components/UnitTopicsGallery.
 
 const categories: Category[] = [
     {
-        identifier: "deakin-units",
+        identifier: "units",
         icon: <LucideGraduationCap />,
-        buttonLabel: "Deakin Units",
-        sectionTitle: "Deakin Unit Topics",
+        buttonLabel: "Units",
+        sectionTitle: "Unit Topics",
         sectionDescription: "Science and Information Technology (SIT) topics to find conversations related to these classes.",
     },
     {
@@ -24,7 +24,7 @@ const categories: Category[] = [
 ]
 
 export default function DiscussionsPage() {
-    const [activeCategory, setActiveCategory] = useState("deakin-units");
+    const [activeCategory, setActiveCategory] = useState("units");
     const [searchFilter, setSearchFilter] = useState("");
 
     return (

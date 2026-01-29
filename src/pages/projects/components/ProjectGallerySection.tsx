@@ -10,7 +10,7 @@ const categories : Category[] = [
         identifier: "featured",
         icon: <Tag/>,
         buttonLabel: "Featured",
-        sectionTitle: "Deakin Software Engineering Club Projects",
+        sectionTitle: "Software Engineering Club Projects",
         sectionDescription: "Projects managed by DSEC execs perfect for first-time contributors. Not sure how to contribute? Contact Us."
     },
     {
@@ -26,9 +26,9 @@ export function ProjectGallerySection({activeCategory, handleSetCategory, search
   { activeCategory: string, handleSetCategory: (s:string) => void, searchFilter: string, setSearchFilter: (filter: string) => void}
 ) {
     return (
-        <section>
+        <section className="flex flex-col gap-2">
             <CategorySelector categories={categories} handleSet={handleSetCategory} activeCategory={activeCategory}  />
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-4">
                 <SearchFilter searchFilter={searchFilter} setSearchFilter={setSearchFilter} />
                 {activeCategory == categories[0].identifier && <CategorySectionDescription category={categories[0]} />}
                 {activeCategory == categories[1].identifier && <CategorySectionDescription category={categories[1]} />}

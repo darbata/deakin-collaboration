@@ -67,7 +67,7 @@ export default function UnitTopicsGallery({searchFilter} : {searchFilter: string
             <TableBody>
                 {filtered.map((unit) => (
                     <TableRow>
-                        <TableCell>{unit.unitCode}</TableCell>
+                        <TableCell className="font-semibold">{unit.unitCode}</TableCell>
                         <TableCell>{unit.description}</TableCell>
                         <TableCell className="text-right">
                             <Button variant="outline" className="ml-2" onClick={() => redirectToUnitSite(unit.unitSiteUrl)}>

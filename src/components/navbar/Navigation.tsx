@@ -23,7 +23,8 @@ export default function Navigation() {
                 <NavigationMenuList className="gap-2">
                     {links.map((link) => {
 
-                        const isActive = location.pathname === link.href;
+                        const isActive =
+                            location.pathname.split("/")[1] === link.label.toLowerCase();
 
                         return (
                             <NavigationMenuItem key={link.label}>
