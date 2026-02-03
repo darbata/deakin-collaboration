@@ -5,7 +5,6 @@ import axios from "axios";
 import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
 import type {Discussion} from "@/types/Discussion.ts";
 import {DiscussionNode} from "@/pages/discussions/components/DiscussionNode.tsx";
-import {useState} from "react";
 
 export type DiscussionThread = {
     rootDiscussion: Discussion
@@ -33,13 +32,13 @@ export function DiscussionThreadPage() {
     const token = auth.user?.id_token;
 
     const { data } = useQuery({
-        queryKey: [discussionId],
+        queryKey: ["discussion", discussionId],
         queryFn: () => fetchDiscussionThread(token, discussionId),
         enabled: !!token,
         staleTime: 5*50*1000
     });
 
-    if (!data) return <>div</>
+    if (!data) return <></>
 
     return (
         <DiscussionNode discussion={data.rootDiscussion} depth={1} />

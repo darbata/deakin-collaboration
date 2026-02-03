@@ -1,10 +1,9 @@
 import {useState} from "react";
 import {type Category, CategorySelector} from "@/pages/projects/components/CategorySelector.tsx";
-import {GlobeIcon, LucideGraduationCap} from "lucide-react";
+import {LucideGraduationCap} from "lucide-react";
 import {SearchFilter} from "@/pages/projects/components/SearchFilter.tsx";
 import {CategorySectionDescription} from "@/pages/projects/components/CategorySectionDescription.tsx";
 import UnitTopicsGallery from "@/pages/discussions/components/UnitTopicsGallery.tsx";
-
 
 const categories: Category[] = [
     {
@@ -13,14 +12,7 @@ const categories: Category[] = [
         buttonLabel: "Units",
         sectionTitle: "Unit Topics",
         sectionDescription: "Science and Information Technology (SIT) topics to find conversations related to these classes.",
-    },
-    {
-        identifier: "community",
-        icon: <GlobeIcon />,
-        buttonLabel: "Community",
-        sectionTitle: "Community Topics",
-        sectionDescription: "See what others are talking about outside of just university.",
-    },
+    }
 ]
 
 export default function DiscussionsPage() {
@@ -36,8 +28,6 @@ export default function DiscussionsPage() {
             <CategorySelector categories={categories} activeCategory={activeCategory} handleSet={setActiveCategory} />
             <SearchFilter searchFilter={searchFilter} setSearchFilter={setSearchFilter} />
             {activeCategory == categories[0].identifier && <CategorySectionDescription category={categories[0]} />}
-            {activeCategory == categories[1].identifier && <CategorySectionDescription category={categories[1]} />}
-
             {activeCategory == categories[0].identifier && <UnitTopicsGallery searchFilter={searchFilter} />}
         </div>
     )

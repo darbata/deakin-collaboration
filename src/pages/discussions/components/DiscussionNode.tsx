@@ -1,10 +1,10 @@
 import type {Discussion} from "@/types/Discussion.ts";
 import {Avatar} from "@/components/ui/avatar.tsx";
 import {AvatarImage} from "@radix-ui/react-avatar";
-import {CornerDownRight, MessageCircleReply, ThumbsUp} from "lucide-react";
+import {CornerDownRight, MessageCircleReply} from "lucide-react";
 import {type JSX, type MouseEventHandler, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import CreateDiscussionDialog from "@/pages/discussions/components/CreateDiscussionDialog.tsx";
+import ReplyBox from "@/pages/discussions/components/ReplyBox.tsx";
 
 type DiscussionButton = {
     icon: JSX.Element;
@@ -12,7 +12,7 @@ type DiscussionButton = {
     onClick: MouseEventHandler
 }
 
-export function DiscussionNode ({ discussion, depth }: { discussion: Discussion, depth: number }) {
+export function DiscussionNode ({ discussion, depth }: { discussion: Discussion, depth: number}) {
 
     const [open, setOpen] = useState(false);
     const MAX_DEPTH = 5;
@@ -30,11 +30,6 @@ export function DiscussionNode ({ discussion, depth }: { discussion: Discussion,
     )
 
     const buttons: DiscussionButton[] = [
-        {
-            icon: <ThumbsUp />,
-            label: "Like",
-            onClick: () => {}
-        },
         {
             icon: <MessageCircleReply />,
             label: "Reply",
@@ -66,8 +61,7 @@ export function DiscussionNode ({ discussion, depth }: { discussion: Discussion,
             {discussion.discussions?.map((d) => (
                 <DiscussionNode key={d.id} discussion={d} depth={depth+1} />
             ))}
-
-            <CreateDiscussionDialog open={open} setOpen={setOpen} parentDiscussionId={discussion.id} unitCode="SIT111" />
+            {open && <ReplyBox key={discussion.id} parentDiscussionId={discussion.id} setOpen={setOpen}  />}
         </div>
     );
 
