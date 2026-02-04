@@ -6,6 +6,7 @@ export type ProjectItem = {
     projectNumber: number;
     issueNumber: number;
     title: string;
+    body: string;
     url: string;
     status: string;
     assignees: ProjectAssignee[],

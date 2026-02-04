@@ -1,10 +1,7 @@
 import PageHeader from "@/components/PageHeader.tsx";
-import ProjectItems from "@/pages/projects/ProjectItems.tsx";
 import {useLocation} from "react-router";
-
-function ProjectBoard() {
-    return null;
-}
+import ProjectBoard from "@/pages/projects/ProjectItems.tsx";
+import {Separator} from "@/components/ui/separator.tsx";
 
 export default function ProjectDashboardPage() {
 
@@ -13,16 +10,14 @@ export default function ProjectDashboardPage() {
 
     console.log(projectId)
 
-
     return (
-        <section>
+        <section className="flex flex-col gap-4">
             <PageHeader
                 header="Project Dashboard"
                 description="Live feed of project activity and contributions"
             />
-            <ProjectBoard />
-            <ProjectItems projectId={projectId}>
-            </ProjectItems>
+            <Separator />
+            <ProjectBoard projectId={projectId} />
         </section>
     )
 }
