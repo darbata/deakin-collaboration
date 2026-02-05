@@ -65,25 +65,19 @@ export function FeaturedProjectCard({project} : {project : FeaturedProject}) {
                     </p>
                 </div>
             </CardHeader>
-            <CardContent className="flex h-[450px] flex-col justify-evenly gap-10">
+            <CardContent className="flex h-[200px] flex-col justify-between gap-10">
                 <p className="text-foreground">{project.description}</p>
-                <div className="flex gap-6">
-                    {
-                        stats.map((stat) => (
-                            <Stat key={stat.label} stat={stat} />
-                        ))
-                    }
-                </div>
-
-                <Separator />
-                <div className="flex justify-between items-center text-muted-foreground">
-                    <div className="flex gap-2 items-center">
-                        <CalendarArrowUp />
-                        <span>{daysSinceLastUpdate} days since last update</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                        <StarIcon />
-                        <span>{project.repoStars} stars</span>
+                <div className="flex flex-col gap-4">
+                    <Separator />
+                    <div className="flex justify-between items-center text-muted-foreground">
+                        <div className="flex gap-2 items-center">
+                            <CalendarArrowUp />
+                            <span>{daysSinceLastUpdate} days since last update</span>
+                        </div>
+                        <div className="flex gap-2 items-center">
+                            <StarIcon />
+                            <span>{project.repoStars} stars</span>
+                        </div>
                     </div>
                 </div>
             </CardContent>

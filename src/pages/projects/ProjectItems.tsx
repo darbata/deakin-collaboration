@@ -25,7 +25,7 @@ function ProjectItemLabel({label} : {label: ProjectLabel}) {
 
     return (
         <div
-            className={`rounded px-4 py-1 text-primary-foreground text-sm`}
+            className={`rounded h-fit p-0 px-2 text-primary-foreground text-sm flex items-center`}
             style={{backgroundColor: `#${beginner ? "08A045"  : label.color}`}}
         >
             {label.name}
@@ -42,7 +42,7 @@ function ProjectItemCard({item} : {item : ProjectItem}) {
     }
 
     return (
-        <div className="flex flex-col gap-2 border border-l-8 border-l-primary rounded-xl py-2 px-8 justify-evenly bg-background">
+        <div className="flex flex-col gap-2 border border-l-8 border-l-primary rounded-xl py-2 px-4 justify-evenly bg-background">
             <div>
                 <span
                     className="font-semibold cursor-pointer"
@@ -53,12 +53,12 @@ function ProjectItemCard({item} : {item : ProjectItem}) {
             </div>
             <div className="flex flex-col gap-2">
                 <span>{item.body}</span>
+
+            </div>
+            <div className="flex justify-between items-center">
                 <div className="flex gap-2">
                     {item.labels.map((label) => <ProjectItemLabel label={label}/>)}
                 </div>
-            </div>
-            <div className="flex justify-end">
-
                 {
                     assignees.length >= 1 ?
                         <AvatarGroup>
@@ -68,7 +68,7 @@ function ProjectItemCard({item} : {item : ProjectItem}) {
                             {assignees.length > 1 && <AvatarGroupCount>{assignees.length - 1}</AvatarGroupCount>}
                         </AvatarGroup>
                     :
-                        <Button>
+                        <Button >
                             <CircleDot />
                             <span>Claim Issue</span>
                         </Button>
@@ -81,9 +81,9 @@ function ProjectItemCard({item} : {item : ProjectItem}) {
 function Column({ title, items }: { title: string; items: ProjectItem[] }) {
     return (
         <div className="flex flex-col gap-2">
-            <div className="flex border-l-2 border-b-2 px-4 py-1 rounded-xl w-fit">
+            <div className="flex px-4 py-1 rounded-xl w-fit">
                 <span className="text-lg font-semibold">{title}</span>
-                <span className="text-lg font-semibold ml-2">- {items.length} items</span>
+                <span className="text-lg font-semibold ml-2">- {items.length} {items.length > 1 ? "items" : "item"}</span>
             </div>
             <ScrollArea className="max-h-[80vh]">
                 <div className="flex flex-col gap-2 pr-2">
@@ -104,9 +104,11 @@ export default function ProjectBoard({projectId} : {projectId: string}) {
         enabled: !!projectId && !!auth.user?.access_token // wait for auth to ready
     });
 
-    if (isError || !data) return <div></div>
-
-    if (isLoading) return <Spinner />
+    if (isError || isLoading || !data) return (
+        <div className="flex justify-center w-full items-center">
+            <Spinner />
+        </div>
+    )
 
     console.log(data);
 
