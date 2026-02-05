@@ -53,7 +53,7 @@ export default function UnitTopicsGallery({searchFilter} : {searchFilter: string
     })
 
     return (
-        <ScrollArea className="h-[1000px] w-full rounded-md border">
+        <ScrollArea className="h-[60vh] w-full rounded-md border">
             <Table>
                 <TableHeader>
                     <TableRow>

@@ -1,6 +1,5 @@
 import type {Discussion} from "@/types/Discussion.ts";
-import {Avatar} from "@/components/ui/avatar.tsx";
-import {AvatarImage} from "@radix-ui/react-avatar";
+import {Avatar, AvatarImage} from "@/components/ui/avatar.tsx";
 import {CornerDownRight, MessageCircleReply} from "lucide-react";
 import {type JSX, type MouseEventHandler, useState} from "react";
 import {useNavigate} from "react-router-dom";

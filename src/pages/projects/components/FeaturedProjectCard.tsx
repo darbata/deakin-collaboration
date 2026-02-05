@@ -41,20 +41,14 @@ export function FeaturedProjectCard({project} : {project : FeaturedProject}) {
     const diff = now - lastUpdated;
     const daysSinceLastUpdate = Math.ceil(diff / (1000 * 3600 * 24));
 
-    const stats: Stat[] = [
-        {
-            icon: <SquareKanbanIcon />,
-            label: "Open Tickets",
-            statistic: project.repoOpenTickets,
-            description: "beginner-friendly"
-        },
-    ]
-
     return (
         <Card className="py-0 overflow-hidden">
             <CardHeader
                 className="relative h-[300px] bg-cover bg-center  "
-                style={{backgroundImage: `linear-gradient(to top right, rgba(0, 0, 0, 0.9), transparent), url(${project.bannerUrl}`}}
+                style={{
+                    backgroundColor: "#EBABC2",
+                    backgroundImage: `linear-gradient(to top right, rgba(0, 0, 0, 0.9), transparent), url(${project.bannerUrl}`
+                }}
             >
                 <div className="absolute left-6 bottom-4 text-background flex flex-col gap-2`">
                     <h3 className="font-bold text-2xl">
