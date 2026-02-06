@@ -33,16 +33,16 @@ export function FeaturedProjectCard({project} : {project : FeaturedProject}) {
             </CardHeader>
             <CardContent className="flex h-[200px] flex-col justify-between gap-10">
                 <p className="text-foreground">{project.description}</p>
-                <div className="flex flex-col gap-4 justify-center">
+                <div className="flex flex-col gap-4 justify-center text-sm">
                     <Separator />
                     <div className="flex justify-between items-center text-muted-foreground">
-                        <div className="flex gap-2 items-center">
-                            <CalendarArrowUp />
+                        <div className="flex gap-1 items-center">
+                            <CalendarArrowUp size={14} />
                             <span>{daysSinceLastUpdate} days since last update</span>
                         </div>
-                        <div className="flex gap-2 items-center">
-                            <StarIcon />
-                            <span>{project.repoStars} stars</span>
+                        <div className="flex gap-1 items-center bg-muted rounded-xl px-2">
+                            <StarIcon size={14} />
+                            <span>{project.repoStars}</span>
                         </div>
                     </div>
                 </div>
@@ -54,14 +54,14 @@ export function FeaturedProjectCard({project} : {project : FeaturedProject}) {
                     onClick={() => {window.location.href = project.repoUrl}}
                 >
                     <GithubIcon />
-                    <span className="font-semibold text-lg">Repository</span>
+                    <span className="font-semibold">Repository</span>
                 </Button>
                 <Button
                     className="flex items-center w-full shrink h-10 "
                     onClick={() => {navigate(`${project.id}`)}}
                 >
                     <LayoutDashboard />
-                    <span className="font-semibold text-lg">Dashboard</span>
+                    <span className="font-semibold">Dashboard</span>
                 </Button>
             </CardFooter>
         </Card>

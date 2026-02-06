@@ -1,37 +1,45 @@
-import {Button} from "@/components/ui/button";
-import {Github} from "lucide-react";
-import {LanguageTag} from "@/pages/projects/components/LanguageTag.tsx";
-import {Card, CardContent, CardFooter, CardHeader} from "@/components/ui/card.tsx";
-import type {UserProject} from "@/types/UserProject.ts";
+import { Button } from "@/components/ui/button";
+import { Github, Code2, User } from "lucide-react";
+import { Card } from "@/components/ui/card.tsx";
+import type { UserProject } from "@/types/UserProject.ts";
 
-
-type projectProps = {
-    project: UserProject;
-}
-
-export function ProjectCard({project} : projectProps) {
+export function ProjectCard({ project }: { project: UserProject }) {
     return (
-        <Card className="px-4 py-4 w-full border border-border rounded-lg">
-            <CardHeader className="flex justify-between  items-center pr-4">
-                <div className="flex gap-4">
-                    <p className="text-muted-foreground text-xl truncate">{project.ownerDisplayName}</p>
+        <Card className="p-4">
+            <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                    <h4 className="text-lg font-semibold">
+                        {project.title}
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                        {project.description}
+                    </p>
                 </div>
-                <LanguageTag language={project.repoLanguage} />
-            </CardHeader>
-            <CardContent className="flex flex-col gap-1">
-                <h4 className="font-semibold text-xl truncate">{project.title}</h4>
-                <p className="text-muted-foreground truncate">{project.description}</p>
-            </CardContent>
-            <CardFooter className="flex gap-2">
-                <Button
-                    className="h-fit cursor-pointer w-full bg-background text-foreground hover:bg-muted border border-foreground"
-                    onClick={() => window.open(project.repoUrl)}
-                >
-                    {/*todo: replace this as lucide github is deprecated*/}
-                    <Github />
-                    <span>Repository</span>
-                </Button>
-            </CardFooter>
+
+                <div className="flex flex-col gap-2">
+                    <div className="flex gap-4 items-center text-xs text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                            <User size={14} />
+                            <span>{project.ownerDisplayName}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <Code2 size={14} />
+                            <span>{project.repoLanguage}</span>
+                        </div>
+                    </div>
+
+                    <Button
+                        onClick={() => window.open(project.repoUrl)}
+                        variant="outline"
+                        className="flex items-center"
+                    >
+                        <Github size={16} />
+                        View Repository
+                    </Button>
+                </div>
+
+
+            </div>
         </Card>
-    )
+    );
 }
