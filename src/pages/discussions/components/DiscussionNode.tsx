@@ -1,5 +1,4 @@
 import type {Discussion} from "@/types/Discussion.ts";
-import {Avatar, AvatarImage} from "@/components/ui/avatar.tsx";
 import {CornerDownRight, MessageCircleReply} from "lucide-react";
 import {type JSX, type MouseEventHandler, useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -38,13 +37,10 @@ export function DiscussionNode ({ discussion, depth }: { discussion: Discussion,
 
     return (
         <div className="ml-4 border-l-2 py-2 pl-4 flex flex-col gap-4">
-            <div className="flex gap-4 items-center">
-                <Avatar className="border border-border">
-                    <AvatarImage src={discussion.user.avatarUrl} />
-                </Avatar>
-                <div className="font-semibold">{discussion.user.displayName}</div>
+            <div className="flex flex-col">
+                <span className="font-semibold">{discussion.user.displayName}</span>
+                <p>{discussion.content}</p>
             </div>
-            <p>{discussion.content}</p>
             <div className="flex gap-4">
                 {
                     buttons.map((button) => (

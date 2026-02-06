@@ -17,10 +17,9 @@ export function FeaturedProjectCard({project} : {project : FeaturedProject}) {
     return (
         <Card className="py-0 overflow-hidden">
             <CardHeader
-                className="relative h-[300px] bg-cover bg-center  "
+                className="relative h-[200px] bg-primary"
                 style={{
-                    backgroundColor: "#EBABC2",
-                    backgroundImage: `linear-gradient(to top right, rgba(0, 0, 0, 0.9), transparent), url(${project.bannerUrl}`
+                    backgroundImage: `linear-gradient(to top right, rgba(0, 0, 0, 0.9), transparent)`
                 }}
             >
                 <div className="absolute left-6 bottom-4 text-background flex flex-col gap-2`">
@@ -34,7 +33,7 @@ export function FeaturedProjectCard({project} : {project : FeaturedProject}) {
             </CardHeader>
             <CardContent className="flex h-[200px] flex-col justify-between gap-10">
                 <p className="text-foreground">{project.description}</p>
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 justify-center">
                     <Separator />
                     <div className="flex justify-between items-center text-muted-foreground">
                         <div className="flex gap-2 items-center">
@@ -48,17 +47,17 @@ export function FeaturedProjectCard({project} : {project : FeaturedProject}) {
                     </div>
                 </div>
             </CardContent>
-            <CardFooter className="w-full bg-muted flex justify-between items-center h-[80px]">
+            <CardFooter className="p-2 w-full bg-muted flex justify-evenly items-center h-[80px] gap-2">
                 <Button
                     variant="outline"
-                    className="flex items-center shrink h-10 px-2"
+                    className="flex items-center w-full shrink h-10 "
                     onClick={() => {window.location.href = project.repoUrl}}
                 >
                     <GithubIcon />
                     <span className="font-semibold text-lg">Repository</span>
                 </Button>
                 <Button
-                    className="flex items-center shrink h-10 "
+                    className="flex items-center w-full shrink h-10 "
                     onClick={() => {navigate(`${project.id}`)}}
                 >
                     <LayoutDashboard />

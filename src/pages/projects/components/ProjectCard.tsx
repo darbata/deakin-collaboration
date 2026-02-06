@@ -1,8 +1,7 @@
 import {Button} from "@/components/ui/button";
-import {Github, MessageSquare} from "lucide-react";
+import {Github} from "lucide-react";
 import {LanguageTag} from "@/pages/projects/components/LanguageTag.tsx";
 import {Card, CardContent, CardFooter, CardHeader} from "@/components/ui/card.tsx";
-import {Avatar, AvatarImage} from "@/components/ui/avatar.tsx";
 import type {UserProject} from "@/types/UserProject.ts";
 
 
@@ -15,9 +14,6 @@ export function ProjectCard({project} : projectProps) {
         <Card className="px-4 py-4 w-full border border-border rounded-lg">
             <CardHeader className="flex justify-between  items-center pr-4">
                 <div className="flex gap-4">
-                    <Avatar>
-                        <AvatarImage src={project.ownerAvatarUrl} />
-                    </Avatar>
                     <p className="text-muted-foreground text-xl truncate">{project.ownerDisplayName}</p>
                 </div>
                 <LanguageTag language={project.repoLanguage} />

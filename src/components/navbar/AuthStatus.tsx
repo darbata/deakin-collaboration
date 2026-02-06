@@ -1,6 +1,5 @@
 import {useAuth} from "react-oidc-context";
 import {Button} from "@/components/ui/button";
-import {Avatar, AvatarImage} from "@/components/ui/avatar";
 import {useAuthenticatedUser} from "@/data/useAuthenticatedUser";
 import {User} from "lucide-react";
 import {
@@ -14,6 +13,7 @@ import {signOutConfig} from "@/config/cognitoAuthConfig.ts";
 import {clientId} from "@/config/githubClientIdConfig.ts";
 import axios from "axios";
 import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
+import {Link} from "react-router";
 
 export default function Profile() {
 
@@ -54,9 +54,7 @@ export default function Profile() {
             <DropdownMenuTrigger asChild>
                 <Button variant="outline">
                     <div className="flex items-center gap-2">
-                        <Avatar className="size-6">
-                            <AvatarImage src={user?.avatarUrl} className="object-cover" />
-                        </Avatar>
+                        <User />
                         <span>{user?.displayName}</span>
                     </div>
                 </Button>
@@ -64,7 +62,7 @@ export default function Profile() {
             <DropdownMenuContent>
                 <DropdownMenuLabel>
                     <DropdownMenuItem>
-                        Profile
+                        <Link to="/profile">Profile</Link>
                     </DropdownMenuItem>
                     {
                         user?.githubConnected

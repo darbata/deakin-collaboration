@@ -5,6 +5,8 @@ import {useAuth} from "react-oidc-context";
 import {Spinner} from "@/components/ui/spinner.tsx";
 import type {ProjectItem} from "@/types/ProjectItem.ts";
 import {Column} from "@/pages/projects/Column.tsx";
+import {MessageCircleQuestionMark} from "lucide-react";
+import {Card, CardContent} from "@/components/ui/card.tsx";
 
 const fetchProjectItems  = async (projectId: string, token: string | undefined) : Promise<ProjectItem[]> => {
     if (!token) return [];
@@ -30,12 +32,16 @@ export default function ProjectBoard({projectId} : {projectId: string}) {
         </div>
     )
 
-    console.log(data);
-
     return (
         <div className="grid lg:grid-cols-2 gap-8">
             <Column projectId={projectId} title="To-Do" items={data.filter((item) => item.status === "Todo")} />
             <Column projectId={projectId} title="In Progress" items={data.filter((item) => item.status === "In Progress")} />
+            <Card className="bg-muted text-muted-foreground">
+                <CardContent className="flex gap-4">
+                    <MessageCircleQuestionMark size={48} />
+                    <span>Don't see something that fits your skills? Drop a suggestion in <i>#ticket-requests</i> and we'll get a ticket started for you.</span>
+                </CardContent>
+            </Card>
         </div>
     )
 }

@@ -10,6 +10,7 @@ import Footer from "@/components/Footer.tsx"
 import {UnitDetailsPage} from "@/pages/discussions/UnitDetailsPage.tsx";
 import {DiscussionThreadPage} from "@/pages/discussions/DiscussionThreadPage.tsx";
 import ProjectDashboardPage from "@/pages/projects/ProjectDashboardPage.tsx";
+import ProfilePage from "@/pages/profile/ProfilePage.tsx";
 
 function Layout() {
     return (
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
             {
                 index: true, // Matches exactly "/"
                 Component: HomePage,
+            },
+            {
+                path: "profile",
+                Component: ProfilePage
             },
             {
                 path: "projects",

@@ -12,7 +12,7 @@ async function fetchAuthenticatedUser(idToken : string) : Promise<User> {
     return response.data;
 }
 
-export function useAuthenticatedUser(idToken : string) {
+export function useAuthenticatedUser(idToken : string | undefined) {
     return useQuery({
         queryKey: ["user-profile", idToken],
         queryFn: () => fetchAuthenticatedUser(idToken),
