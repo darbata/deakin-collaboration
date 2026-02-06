@@ -82,6 +82,7 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
                     }
                 });
                 setRepos(response.data);
+                console.log(response);
             } catch (error) {
                 toast.error("Failed to fetch repositories");
                 console.error(error);
@@ -136,14 +137,14 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
                                     return (
                                         <Field data-invalid={isInvalid}>
                                             <FieldLabel htmlFor={field.name}>Description</FieldLabel>
-                                            <Input
+                                            <textarea
                                                 id={field.name}
                                                 name={field.name}
                                                 value={field.state.value}
                                                 onBlur={field.handleBlur}
                                                 onChange={(e) => field.handleChange(e.target.value)}
                                                 aria-invalid={isInvalid}
-                                                className="min-h-32 resize-none"
+                                                className="min-h-32 resize-none resize-none border rounded "
                                                 autoComplete="off"
                                             />
                                             <FieldDescription>
@@ -175,7 +176,7 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
                                                     {repos.length > 0 ? (
                                                         repos.map((repo) => (
                                                             <SelectItem key={repo.id} value={repo.id.toString()}>
-                                                                {repo.name}
+                                                                {repo.full_name}
                                                             </SelectItem>
                                                         ))
                                                     ) : (

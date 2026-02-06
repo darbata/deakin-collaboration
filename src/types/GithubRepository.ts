@@ -1,11 +1,11 @@
+import type {GithubRepositoryOwner} from "@/types/GithubRepositoryOwner.ts";
+
 export type GithubRepository = {
     id: number;
-    name: string;
-    url: string;
+    full_name: string;
+    html_url: string;
     language: string;
-    openTickets: number;
-    contributors: number;
-    stars: number;
-    pushedAt: number;
+    stargazers_count: number;
+    pushed_at: string;
+    owner: GithubRepositoryOwner;
 }
-

@@ -1,36 +1,9 @@
 import {Card, CardContent, CardFooter, CardHeader} from "@/components/ui/card.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {CalendarArrowUp, GithubIcon, LayoutDashboard, SquareKanbanIcon, StarIcon} from "lucide-react";
-import {type JSX} from "react";
+import {CalendarArrowUp, GithubIcon, LayoutDashboard, StarIcon} from "lucide-react";
 import {type FeaturedProject} from "@/types/FeaturedProject.ts";
 import {useNavigate} from "react-router-dom";
-
-type Stat = {
-    icon: JSX.Element;
-    label: string;
-    statistic: number;
-    description: string;
-}
-
-function Stat({stat} : {stat: Stat}) {
-
-    return (
-        <Card className="bg-gray-100 w-full border-none text-gray-500">
-
-            <CardContent className="flex flex-col gap-2">
-                <div className="flex gap-2">
-                    {stat.icon}
-                    <span>{stat.label}</span>
-                </div>
-                <span className="font-bold text-4xl text-foreground">{stat.statistic}</span>
-                <span className="text-sm">{stat.description}</span>
-            </CardContent>
-
-        </Card>
-    )
-
-}
 
 export function FeaturedProjectCard({project} : {project : FeaturedProject}) {
 
@@ -38,7 +11,7 @@ export function FeaturedProjectCard({project} : {project : FeaturedProject}) {
 
     const lastUpdated = new Date(project.repoPushedAt);
     const now = new Date();
-    const diff = now - lastUpdated;
+    const diff = now.getTime() - lastUpdated.getTime();
     const daysSinceLastUpdate = Math.ceil(diff / (1000 * 3600 * 24));
 
     return (
@@ -75,21 +48,21 @@ export function FeaturedProjectCard({project} : {project : FeaturedProject}) {
                     </div>
                 </div>
             </CardContent>
-            <CardFooter className="w-full bg-muted flex items-center h-[100px] p-4 gap-4">
+            <CardFooter className="w-full bg-muted flex justify-between items-center h-[80px]">
                 <Button
                     variant="outline"
-                    className="flex items-center w-full shrink h-12"
+                    className="flex items-center shrink h-10 px-2"
                     onClick={() => {window.location.href = project.repoUrl}}
                 >
                     <GithubIcon />
-                    <span className="font-semibold text-lg">View on Github</span>
+                    <span className="font-semibold text-lg">Repository</span>
                 </Button>
                 <Button
-                    className="flex items-center w-full shrink h-12"
+                    className="flex items-center shrink h-10 "
                     onClick={() => {navigate(`${project.id}`)}}
                 >
                     <LayoutDashboard />
-                    <span className="font-semibold text-lg">See Dashboard</span>
+                    <span className="font-semibold text-lg">Dashboard</span>
                 </Button>
             </CardFooter>
         </Card>
