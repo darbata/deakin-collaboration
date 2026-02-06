@@ -1,27 +1,21 @@
-import axios from "axios";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
+import axios from "axios";
 import type {User} from "@/types/User.ts";
 
-async function connectGithub(code : string, idToken : string) {
-    const response = await axios.post(
-        `http://localhost:8080/api/github/oauth?code=${code}`,
-        { },
-        {
-            headers: {
-                Authorization: `Bearer ${idToken}`
-            }
-        }
-    )
-    return response.data;
-}
-
-export function useConnectGithub(idToken: string) {
-
+export function useDisconnectGithub(idToken: string) {
     const queryClient = useQueryClient();
-    const queryKey = ["user-profile", idToken]
+    const queryKey = ["user-profile", idToken];
 
     return useMutation({
-        mutationFn: (code: string) => connectGithub(code, idToken),
+        mutationFn: async () => {
+            await axios.delete(`${apiBaseUrl}/github/oauth`, {
+                headers: {
+                    Authorization: `Bearer ${idToken}`
+                }
+            })
+        },
+
         onMutate: async () => {
             await queryClient.cancelQueries({queryKey});
 
@@ -30,12 +24,13 @@ export function useConnectGithub(idToken: string) {
             if (previousUser) {
                 queryClient.setQueryData<User>(queryKey, {
                     ...previousUser,
-                    githubConnected: true
-                })
+                    githubConnected: false
+                });
             }
 
             return {previousUser};
         },
+
         onError: (_error, _newUser, context) => {
             if (context?.previousUser) {
                 queryClient.setQueryData(queryKey, context.previousUser);
@@ -43,7 +38,7 @@ export function useConnectGithub(idToken: string) {
         },
 
         onSettled: () => {
-            queryClient.invalidateQueries({queryKey});
+            queryClient.invalidateQueries(({queryKey}));
         }
     });
 }

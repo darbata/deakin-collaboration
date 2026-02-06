@@ -1,35 +1,26 @@
-import { useAuth } from "react-oidc-context";
-import {useConnectGithub} from "@/data/useConnectGithub";
+import {useConnectGithub} from "@/data/useConnectGithub.ts";
+import {useNavigate, useSearchParams} from "react-router-dom";
+import {useAuth} from "react-oidc-context";
 import {useEffect} from "react";
-import {useSearchParams, useNavigate} from "react-router-dom";
 
 export default function GithubFetch() {
-
     const auth = useAuth();
+    const idToken = auth.user?.id_token ?? "";
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-
-    const {mutate} = useConnectGithub();
-
+    const { mutate, isPending } = useConnectGithub(idToken);
 
     useEffect(() => {
         const code = searchParams.get("code");
-        const idToken = auth.user?.id_token;
-
         if (code && idToken) {
-            mutate(
-                {code, idToken},
-                {
-                    onSettled: () => {
-                        navigate("/")
-                    },
-                    onError: (error) => {
-                        console.error(error);
-                    }
+            mutate(code, {
+                onSuccess: () => {
+                    navigate("/profile", { replace: true });
                 }
-            )
+            });
         }
-    }, [navigate, searchParams, auth.user, mutate]);
+    }, [idToken, searchParams, mutate, navigate]);
 
-    return <div>Complete</div>;
+    if (isPending) return <div>Connecting...</div>;
+    return <div>Connected</div>;
 }

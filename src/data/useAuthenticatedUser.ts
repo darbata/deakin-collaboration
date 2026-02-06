@@ -1,6 +1,6 @@
 import axios from "axios";
 import {useQuery} from "@tanstack/react-query";
-import type {User} from "@/data/User.ts";
+import type {User} from "@/types/User.ts";
 
 const endpoint = "http://localhost:8080/api/auth";
 
@@ -12,7 +12,7 @@ async function fetchAuthenticatedUser(idToken : string) : Promise<User> {
     return response.data;
 }
 
-export function useAuthenticatedUser(idToken : string | undefined) {
+export function useAuthenticatedUser(idToken : string) {
     return useQuery({
         queryKey: ["user-profile", idToken],
         queryFn: () => fetchAuthenticatedUser(idToken),

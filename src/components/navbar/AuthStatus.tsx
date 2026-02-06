@@ -11,13 +11,15 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import {signOutConfig} from "@/config/cognitoAuthConfig.ts";
 import {clientId} from "@/config/githubClientIdConfig.ts";
-import axios from "axios";
-import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
 import {Link} from "react-router";
+import {useDisconnectGithub} from "@/data/useDisconnectGithub.ts";
 
 export default function Profile() {
 
     const auth = useAuth();
+    const idToken = auth.user?.id_token ?? "";
+
+    const disconnectGithub = useDisconnectGithub(idToken);
 
     const {
         data: user,
@@ -25,28 +27,12 @@ export default function Profile() {
         isError
     } = useAuthenticatedUser(auth.user?.id_token ?? "");
 
-    if (!auth.isAuthenticated)
-        return <Button onClick={() => auth.signinRedirect()}>Sign in</Button>
-
-    if (isLoading || isError) {
-        return (
-            <div className="flex items-center">
-                <User />
-            </div>
-        )
-    }
+    if (!auth.isAuthenticated) return <Button onClick={() => auth.signinRedirect()}>Sign in</Button>;
+    if (isLoading || isError) return <div className="flex items-center"><User /></div>;
 
     const redirectGithubAuth = () => {
         const url = `https://github.com/login/oauth/authorize?client_id=${clientId}`
         window.location.href = url
-    }
-
-    const disconnectGithub = async () => {
-        await axios.delete(`${apiBaseUrl}/github/oauth`, {
-            headers: {
-                Authorization: `Bearer ${auth.user?.access_token}`
-            }
-        });
     }
 
     return (
@@ -66,7 +52,7 @@ export default function Profile() {
                     </DropdownMenuItem>
                     {
                         user?.githubConnected
-                        ? <DropdownMenuItem onClick={disconnectGithub}>Disconnect GitHub</DropdownMenuItem>
+                        ? <DropdownMenuItem onClick={() => disconnectGithub.mutate()}>Disconnect GitHub</DropdownMenuItem>
                         : <DropdownMenuItem onClick={redirectGithubAuth}>Connect GitHub</DropdownMenuItem>
                     }
                     <DropdownMenuItem
