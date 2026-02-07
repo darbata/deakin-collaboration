@@ -1,17 +1,17 @@
 import {create} from 'zustand';
 import {clientId} from "@/config/githubClientIdConfig";
-import type {UserModel} from "@/data/UserModel.ts";
+import type {User} from "@/types/User.ts";
 
 interface UserState {
-    user: UserModel | null;
-    setUser: (user: UserModel) => void;
+    user: User | null;
+    setUser: (user: User) => void;
     clearUser: () => void;
     connectGithub: () => void;
 }
 
 export const useUserStore = create<UserState>((set) => ({
     user: null,
-    setUser: (user: UserModel) => set({user: user}),
+    setUser: (user: User) => set({user: user}),
     clearUser: () => set({user: null}),
 
     // redirect to Github SSO prompts user to authorise app

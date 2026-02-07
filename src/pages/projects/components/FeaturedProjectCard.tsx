@@ -40,7 +40,7 @@ export function FeaturedProjectCard({project} : {project : FeaturedProject}) {
                             <CalendarArrowUp size={14} />
                             <span>{daysSinceLastUpdate} days since last update</span>
                         </div>
-                        <div className="flex gap-1 items-center bg-muted rounded-xl px-2">
+                        <div className="flex gap-1 items-center bg-muted rounded-xl px-3">
                             <StarIcon size={14} />
                             <span>{project.repoStars}</span>
                         </div>

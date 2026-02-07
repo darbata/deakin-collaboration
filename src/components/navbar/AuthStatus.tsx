@@ -1,6 +1,6 @@
 import {useAuth} from "react-oidc-context";
 import {Button} from "@/components/ui/button";
-import {useAuthenticatedUser} from "@/data/useAuthenticatedUser";
+import useAuthenticatedUser from "@/data/useAuthenticatedUser";
 import {User} from "lucide-react";
 import {
     DropdownMenu,

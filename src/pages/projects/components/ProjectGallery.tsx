@@ -40,10 +40,15 @@ const fetchFeaturedProjects = async (token : string | undefined, pageNum : numbe
     return response.data;
 }
 
-export function ProjectGallery({searchFilter, category} : {searchFilter: string; category: string}) {
+export function ProjectGallery(
+    {searchFilter, category} :
+    {searchFilter: string; category: string}
+) {
 
     const auth = useAuth();
     const token = auth?.user?.id_token;
+
+    console.log(category);
 
     const { data } = useQuery({
         queryKey: ["projects", category],
@@ -51,7 +56,6 @@ export function ProjectGallery({searchFilter, category} : {searchFilter: string;
             ? fetchFeaturedProjects(token, 0, 50)
             : fetchCommunityProjects(token, 0, 50),
         enabled: !!token,
-        staleTime: 5*50*1000
     });
 
     if (data == undefined || data?.content.length <= 0) return <div></div>

@@ -1,16 +1,13 @@
-import {type Dispatch, type SetStateAction, useEffect, useState} from "react";
+import {type Dispatch, type SetStateAction} from "react";
 import {Dialog, DialogContent, DialogFooter} from "@/components/ui/dialog.tsx";
-import {toast} from "sonner";
 import * as z from "zod";
 import {useForm, useStore} from "@tanstack/react-form";
 import {Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldSeparator} from "@/components/ui/field.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
-import axios from "axios";
-import {useAuth} from "react-oidc-context";
 import { Button } from "@/components/ui/button";
-import type {GithubRepository} from "@/types/GithubRepository.ts";
-import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
+import useCreateCommunityProject from "@/data/useCreateCommunityProject.ts";
+import {useUserGithubRepos} from "@/data/useCommunityProjects.ts";
 
 const formSchema = z.object({
     title: z.string()
@@ -24,9 +21,8 @@ const formSchema = z.object({
 
 export default function CreateProjectDialog({open, setOpen} : {open: boolean, setOpen: Dispatch<SetStateAction<boolean>>}) {
 
-    const auth = useAuth();
-
-    const [repos, setRepos] = useState<GithubRepository[]>([])
+    const {data} = useUserGithubRepos();
+    const create = useCreateCommunityProject();
 
     const form = useForm({
         defaultValues: {
@@ -38,62 +34,14 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
             onSubmit: formSchema,
         },
         onSubmit: async ({value}) => {
-            if (!auth.user?.access_token) {
-                toast.error("You must be logged in to create a project");
-                return;
-            }
-
-            try {
-                const payload = {
-                    title: value.title,
-                    description: value.description,
-                    repoId: value.githubRepoId
-                };
-
-                const response = await axios.post(`${apiBaseUrl}/projects/community`, payload, {
-                    headers: {
-                        Authorization: `Bearer ${auth.user.access_token}`,
-                        "Content-Type": "application/json"
-                    }
-                });
-
-                if (response.status === 200 || response.status === 201) {
-                    toast.success("Project created successfully!");
-                    form.reset();
-                    setOpen(false);
-                }
-            } catch (error) {
-                console.error("Submission error:", error);
-                toast.error("Failed to create project. Please try again.");
-            }
+            console.log("Mutation...", value)
+            await create.mutateAsync(value);
+            setOpen(false);
         }
     })
 
     const isSubmitting = useStore(form.store, (state) => state.isSubmitting);
     const canSubmit = useStore(form.store, (state) => state.canSubmit);
-
-    useEffect(() => {
-        const fetchRepos = async () => {
-            if (!auth.user?.access_token) return;
-            try {
-                const response = await axios.get("http://localhost:8080/api/github/repos", {
-                    headers: {
-                        Authorization: `Bearer ${auth.user.access_token}`
-                    }
-                });
-                setRepos(response.data);
-                console.log(response);
-            } catch (error) {
-                toast.error("Failed to fetch repositories");
-                console.error(error);
-            }
-        }
-
-        if (open) {
-            void fetchRepos();
-        }
-
-    }, [open, auth.user])
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -173,8 +121,8 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
                                                     <SelectValue placeholder="Choose your repository" />
                                                 </SelectTrigger>
                                                 <SelectContent className="max-h-60 overflow-y-auto">
-                                                    {repos.length > 0 ? (
-                                                        repos.map((repo) => (
+                                                    {data ? (
+                                                        data.map((repo) => (
                                                             <SelectItem key={repo.id} value={repo.id.toString()}>
                                                                 {repo.full_name}
                                                             </SelectItem>
@@ -190,7 +138,6 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
                                 }}
                             />
                         </FieldGroup>
-                    </form>
                 <DialogFooter>
                     <Button
                         type="submit"
@@ -201,8 +148,8 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
                         {isSubmitting ? "Creating..." : "Create Project"}
                     </Button>
                 </DialogFooter>
+                </form>
             </DialogContent>
-
         </Dialog>
     )
 }

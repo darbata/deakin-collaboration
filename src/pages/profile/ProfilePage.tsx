@@ -1,12 +1,16 @@
 import {Card, CardContent, CardFooter, CardHeader} from "@/components/ui/card.tsx";
 import type {User} from "@/types/User.ts";
-import {useAuthenticatedUser} from "@/data/useAuthenticatedUser.ts";
+import useAuthenticatedUser from "@/data/useAuthenticatedUser.ts";
 import {useAuth} from "react-oidc-context";
 
 export default function ProfilePage() {
 
     const auth = useAuth();
-    const response = useAuthenticatedUser(auth.user?.id_token)
+    const token = auth.user?.id_token ?? "";
+    const response = useAuthenticatedUser(token)
+
+    if (!response || !response.data) return <div></div>
+
     const user: User = response.data;
 
     return (
