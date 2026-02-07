@@ -6,8 +6,6 @@ import {Button} from "@/components/ui/button.tsx";
 import {CircleDot} from "lucide-react";
 import useClaimIssue from "@/data/useClaimIssue.ts";
 
-
-
 export function ProjectItemCard({projectId, item}: { projectId: string, item: ProjectItem }) {
     const claim = useClaimIssue(projectId);
 

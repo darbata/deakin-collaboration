@@ -10,12 +10,8 @@ import useCreateCommunityProject from "@/data/useCreateCommunityProject.ts";
 import {useUserGithubRepos} from "@/data/useCommunityProjects.ts";
 
 const formSchema = z.object({
-    title: z.string()
-        .min(3, "Title should be descriptive.")
-        .max(40, "Keep your title's short and sweet."),
-    description: z.string()
-        .min(12, "Make sure people can understand what your project is.")
-        .max(140, "Description too long."),
+    title: z.string(),
+    description: z.string(),
     githubRepoId: z.number()
 })
 
@@ -51,8 +47,8 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent>
-                    <form id="create-project-form" onSubmit={handleSubmit}  className="flex">
+            <DialogContent >
+                    <form id="create-project-form" onSubmit={handleSubmit}  className="flex flex-col gap-4">
                         <FieldGroup>
                             <form.Field
                                 name="title"
@@ -92,7 +88,7 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
                                                 onBlur={field.handleBlur}
                                                 onChange={(e) => field.handleChange(e.target.value)}
                                                 aria-invalid={isInvalid}
-                                                className="min-h-32 resize-none resize-none border rounded "
+                                                className="min-h-32 resize-none border rounded p-2"
                                                 autoComplete="off"
                                             />
                                             <FieldDescription>
@@ -138,16 +134,16 @@ export default function CreateProjectDialog({open, setOpen} : {open: boolean, se
                                 }}
                             />
                         </FieldGroup>
-                <DialogFooter>
-                    <Button
-                        type="submit"
-                        form="create-project-form"
-                        className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md w-full"
-                        disabled={isSubmitting || !canSubmit}
-                    >
-                        {isSubmitting ? "Creating..." : "Create Project"}
-                    </Button>
-                </DialogFooter>
+                    <DialogFooter>
+                        <Button
+                            type="submit"
+                            form="create-project-form"
+                            className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md w-full"
+                            disabled={isSubmitting || !canSubmit}
+                        >
+                            {isSubmitting ? "Creating..." : "Create Project"}
+                        </Button>
+                    </DialogFooter>
                 </form>
             </DialogContent>
         </Dialog>
