@@ -4,27 +4,15 @@ import {ProjectItemLabel} from "@/pages/projects/ProjectItemLabel.tsx";
 import {Avatar, AvatarGroup, AvatarGroupCount, AvatarImage} from "@/components/ui/avatar.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {CircleDot} from "lucide-react";
-import axios from "axios";
-import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
-import {useAuth} from "react-oidc-context";
+import useClaimIssue from "@/data/useClaimIssue.ts";
 
-const handleClaim = async (token: string | undefined, projectId: string, issueNumber: number) => {
-    await axios.post(`${apiBaseUrl}/projects/featured/${projectId}/${issueNumber}`, {}, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    })
-}
+
 
 export function ProjectItemCard({projectId, item}: { projectId: string, item: ProjectItem }) {
-
-    console.log(item);
-
-    const auth = useAuth();
+    const claim = useClaimIssue(projectId);
 
     const handleClaimClick = async () => {
-        const token: string | undefined = auth.user?.access_token;
-        await handleClaim(token, projectId, item.issueNumber);
+        claim.mutate({projectId: projectId, issueNumber: item.issueNumber})
     }
 
     const assignees: ProjectAssignee[] = item.assignees;
