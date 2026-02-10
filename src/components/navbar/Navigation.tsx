@@ -9,8 +9,8 @@ import {Link, useLocation} from "react-router"
 const links = [
     { href: "/", label: "Home" },
     { href: "/projects", label: "Projects" },
-    { href: "/discussions", label: "Discussions" },
-    { href: "/events", label: "Events" },
+    { href: "/discussions", label: "Discussions" }
+    // { href: "/events", label: "Events" },
 ];
 
 export default function Navigation() {

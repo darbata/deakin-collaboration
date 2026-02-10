@@ -33,15 +33,18 @@ export default function ProjectBoard({projectId} : {projectId: string}) {
     )
 
     return (
-        <div className="grid lg:grid-cols-2 gap-8">
-            <Column projectId={projectId} title="To-Do" items={data.filter((item) => item.status === "Todo")} />
-            <Column projectId={projectId} title="In Progress" items={data.filter((item) => item.status === "In Progress")} />
-            <Card className="bg-muted text-muted-foreground">
-                <CardContent className="flex gap-4">
+        <section className="flex flex-col gap-4">
+            <div className="grid lg:grid-cols-2 gap-8">
+                <Column projectId={projectId} title="To-Do" items={data.filter((item) => item.status === "Todo")} />
+                <Column projectId={projectId} title="In Progress" items={data.filter((item) => item.status === "In Progress")} />
+
+            </div>
+            <Card className="bg-muted text-muted-foreground justify-center">
+                <CardContent className="flex gap-4 items-center justify-center">
                     <MessageCircleQuestionMark size={48} />
                     <span>Don't see something that fits your skills? Drop a suggestion in <i>#ticket-requests</i> and we'll get a ticket started for you.</span>
                 </CardContent>
             </Card>
-        </div>
+        </section>
     )
 }

@@ -5,11 +5,14 @@ import {Avatar, AvatarGroup, AvatarGroupCount, AvatarImage} from "@/components/u
 import {Button} from "@/components/ui/button.tsx";
 import {CircleDot} from "lucide-react";
 import useClaimIssue from "@/data/useClaimIssue.ts";
+import {useState} from "react";
+import ClaimIssueDialogue from "@/pages/projects/components/ClaimIssueDialogue.tsx";
 
 export function ProjectItemCard({projectId, item}: { projectId: string, item: ProjectItem }) {
-    const claim = useClaimIssue(projectId);
+    const [open, setOpen] = useState<boolean>(false);
 
-    const handleClaimClick = async () => {
+    const claim = useClaimIssue(projectId);
+    const handleClaim= async () => {
         claim.mutate({projectId: projectId, issueNumber: item.issueNumber})
     }
 
@@ -47,12 +50,13 @@ export function ProjectItemCard({projectId, item}: { projectId: string, item: Pr
                             {assignees.length > 1 && <AvatarGroupCount>{assignees.length - 1}</AvatarGroupCount>}
                         </AvatarGroup>
                         :
-                        <Button onClick={handleClaimClick}>
+                        <Button onClick={() => setOpen(true)}>
                             <CircleDot/>
                             <span>Claim Issue</span>
                         </Button>
                 }
             </div>
+            <ClaimIssueDialogue open={open} onOpenChange={setOpen} onConfirm={handleClaim} />
         </div>
     )
 }
