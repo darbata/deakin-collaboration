@@ -1,19 +1,16 @@
 import {Button} from "@/components/ui/button.tsx";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field.tsx";
-import {useAuth} from "react-oidc-context";
+import {Field, FieldError, FieldGroup} from "@/components/ui/field.tsx";
 import {useForm, useStore} from "@tanstack/react-form";
-import {toast} from "sonner";
-import axios from "axios";
-import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
 import {z} from "zod";
+import useCreateDiscussion from "@/data/useCreateDiscussion.tsx";
 
 const formSchema = z.object({
-    content: z.string().min(12)
+    content: z.string()
 })
 
-export default function ReplyBox({parentDiscussionId, setOpen, } : {parentDiscussionId: string; setOpen: (open: boolean) => void; } ) {
+export default function ReplyBox({rootDiscussionId, parentDiscussionId, setOpen} : {rootDiscussionId: string; parentDiscussionId: string; setOpen: (open: boolean) => void; } ) {
 
-    const auth = useAuth();
+    const reply = useCreateDiscussion(rootDiscussionId);
 
     const form = useForm({
         defaultValues: {
@@ -24,35 +21,8 @@ export default function ReplyBox({parentDiscussionId, setOpen, } : {parentDiscus
         },
 
         onSubmit: async ({value}) => {
-            if (!auth.user?.access_token) {
-                toast.error("You must be logged in to create a discussion");
-                return;
-            }
-
-            try {
-                const payload = {
-                    parentDiscussionId: parentDiscussionId,
-                    content: value.content,
-                };
-
-                const response = await axios.post(`${apiBaseUrl}/topics/discussions/${parentDiscussionId}`, payload, {
-                    headers: {
-                        Authorization: `Bearer ${auth.user.access_token}`,
-                        "Content-Type": "application/json"
-                    }
-                });
-
-                console.log("request successful", response.data)
-
-                form.reset();
-                setOpen(false);
-                toast.success("Created discussion successfully");
-            } catch (error) {
-                console.log(error);
-                form.reset();
-                setOpen(false);
-                toast.error("Failed to create discussion try again later");
-            }
+            reply.mutate({parentDiscussionId: parentDiscussionId, content: value.content});
+            setOpen(false);
         }
     })
 

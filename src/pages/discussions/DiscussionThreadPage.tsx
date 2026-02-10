@@ -31,6 +31,7 @@ export function DiscussionThreadPage() {
     const auth = useAuth();
     const token = auth.user?.id_token;
 
+
     const { data } = useQuery({
         queryKey: ["discussion", discussionId],
         queryFn: () => fetchDiscussionThread(token, discussionId),
@@ -38,9 +39,12 @@ export function DiscussionThreadPage() {
         staleTime: 5*50*1000
     });
 
+
+    console.log("DiscussionThreadPage" + discussionId)
+
     if (!data) return <></>
 
     return (
-        <DiscussionNode discussion={data.rootDiscussion} depth={1} />
+        <DiscussionNode rootDiscussionId={discussionId ?? ""} discussion={data.rootDiscussion} depth={1} />
     )
 }

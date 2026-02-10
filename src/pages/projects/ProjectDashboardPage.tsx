@@ -2,8 +2,6 @@ import PageHeader from "@/components/PageHeader.tsx";
 import {useLocation} from "react-router";
 import ProjectBoard from "@/pages/projects/ProjectItems.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
-import ClaimIssueDialogue from "@/pages/projects/components/ClaimIssueDialogue.tsx";
-import {useState} from "react";
 
 export default function ProjectDashboardPage() {
 

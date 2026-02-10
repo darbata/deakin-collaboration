@@ -10,7 +10,7 @@ type DiscussionButton = {
     onClick: MouseEventHandler
 }
 
-export function DiscussionNode ({ discussion, depth }: { discussion: Discussion, depth: number}) {
+export function DiscussionNode ({rootDiscussionId, discussion, depth }: {rootDiscussionId: string; discussion: Discussion; depth: number;}) {
 
     const [open, setOpen] = useState(false);
     const MAX_DEPTH = 5;
@@ -36,8 +36,8 @@ export function DiscussionNode ({ discussion, depth }: { discussion: Discussion,
     ]
 
     return (
-        <div className="ml-4 border-l-2 py-2 pl-4 flex flex-col gap-4">
-            <div className="flex flex-col">
+        <div className={`ml-4 border-l-2 py-2 pl-4 flex flex-col gap-4` }>
+            <div className={`flex flex-col`}>
                 <span className="font-semibold">{discussion.user.displayName}</span>
                 <p>{discussion.content}</p>
             </div>
@@ -53,10 +53,10 @@ export function DiscussionNode ({ discussion, depth }: { discussion: Discussion,
                     ))
                 }
             </div>
+            {open && <ReplyBox rootDiscussionId={rootDiscussionId} key={discussion.id} parentDiscussionId={discussion.id} setOpen={setOpen}  />}
             {discussion.discussions?.map((d) => (
-                <DiscussionNode key={d.id} discussion={d} depth={depth+1} />
+                <DiscussionNode key={d.id} rootDiscussionId={rootDiscussionId} discussion={d} depth={depth+1} />
             ))}
-            {open && <ReplyBox key={discussion.id} parentDiscussionId={discussion.id} setOpen={setOpen}  />}
         </div>
     );
 
