@@ -36,7 +36,6 @@ export function DiscussionThreadPage() {
         queryKey: ["discussion", discussionId],
         queryFn: () => fetchDiscussionThread(token, discussionId),
         enabled: !!token,
-        staleTime: 5*50*1000
     });
 
 

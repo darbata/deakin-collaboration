@@ -2,7 +2,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {Field, FieldError, FieldGroup} from "@/components/ui/field.tsx";
 import {useForm, useStore} from "@tanstack/react-form";
 import {z} from "zod";
-import useCreateDiscussion from "@/data/useCreateDiscussion.tsx";
+import useReplyToDiscussion from "@/data/useReplyToDiscussion.tsx";
 
 const formSchema = z.object({
     content: z.string()
@@ -10,7 +10,7 @@ const formSchema = z.object({
 
 export default function ReplyBox({rootDiscussionId, parentDiscussionId, setOpen} : {rootDiscussionId: string; parentDiscussionId: string; setOpen: (open: boolean) => void; } ) {
 
-    const reply = useCreateDiscussion(rootDiscussionId);
+    const reply = useReplyToDiscussion(rootDiscussionId);
 
     const form = useForm({
         defaultValues: {

@@ -1,25 +1,20 @@
 import {type Dispatch, type SetStateAction} from "react";
 import {Dialog, DialogContent, DialogFooter} from "@/components/ui/dialog.tsx";
-import {toast} from "sonner";
 import * as z from "zod";
 import {useForm, useStore} from "@tanstack/react-form";
 import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field.tsx";
-import axios from "axios";
-import {useAuth} from "react-oidc-context";
 import { Button } from "@/components/ui/button";
-import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
+import useCreateNewDiscussion from "@/data/useCreateNewDiscussion.ts";
 
 const formSchema = z.object({
     content: z.string().min(12)
 })
 
 export default function CreateDiscussionDialog(
-    {open, setOpen, unitCode, parentDiscussionId}
+    {open, setOpen, unitCode}
     : {open: boolean, setOpen: Dispatch<SetStateAction<boolean>>, unitCode: string, parentDiscussionId: string | null}
 ) {
-
-    const auth = useAuth();
-
+    const create = useCreateNewDiscussion(unitCode);
     const form = useForm({
         defaultValues: {
             content: "",
@@ -29,34 +24,8 @@ export default function CreateDiscussionDialog(
         },
 
         onSubmit: async ({value}) => {
-            if (!auth.user?.access_token) {
-                toast.error("You must be logged in to create a discussion");
-                return;
-            }
-
-            try {
-                const payload = {
-                    parentDiscussionId: parentDiscussionId,
-                    content: value.content,
-                };
-
-                const response = await axios.post(`${apiBaseUrl}/topics/${unitCode}`, payload, {
-                    headers: {
-                        Authorization: `Bearer ${auth.user.access_token}`,
-                        "Content-Type": "application/json"
-                    }
-                });
-
-                console.log("request successfil", response.data)
-
-                form.reset();
-                setOpen(false);
-                toast.success("Created discussion successfully");
-            } catch (error) {
-                form.reset();
-                setOpen(false);
-                toast.error("Failed to create discussion try again later");
-            }
+            create.mutate({content: value.content});
+            setOpen(false);
         }
     })
 

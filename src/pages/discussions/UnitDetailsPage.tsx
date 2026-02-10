@@ -32,10 +32,9 @@ export function UnitDetailsPage() {
     const token = auth.user?.id_token;
 
     const { data } = useQuery({
-        queryKey: [topic],
+        queryKey: ["topic-details", topic],
         queryFn: () => fetchTopicDetails(token, topic),
         enabled: !!token,
-        staleTime: 5*50*1000
     });
 
     if (!data) return <>div</>
@@ -65,7 +64,7 @@ export function UnitDetailsPage() {
                     <RootDiscussionCard key={discussion.content} discussion={discussion}></RootDiscussionCard>
                 ))}
             </div>
-            <CreateDiscussionDialog open={open} setOpen={setOpen} unitCode={topic ? topic : ""} parentDiscussionId={null} />
+            <CreateDiscussionDialog open={open} setOpen={setOpen} unitCode={topic ? topic : ""} />
         </div>
     )
 }
