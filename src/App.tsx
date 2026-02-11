@@ -30,7 +30,7 @@ const router = createBrowserRouter([
         element: <Layout />,
         children: [
             {
-                index: true, // Matches exactly "/"
+                index: true,
                 Component: HomePage,
             },
             {

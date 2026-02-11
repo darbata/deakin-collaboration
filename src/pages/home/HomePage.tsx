@@ -1,27 +1,7 @@
-import {Card, CardContent} from "@/components/ui/card.tsx";
-import {Accordion, AccordionContent, AccordionTrigger,} from "@/components/ui/accordion.tsx";
-import {AccordionItem} from "@radix-ui/react-accordion";
 import {Button} from "@/components/ui/button.tsx";
-
-type CollaborationCard = {
-    main: string;
-    supporting: string;
-}
-
-const collaborationCards : CollaborationCard[] = [
-    {
-        main: "Discover Open Projects",
-        supporting: "Want to build your skills but not sure how to practice? Browse beginner-friendly student projects open for contribution."
-    },
-    {
-        main: "Discussion Forums",
-        supporting: "See what others are talking about, whether you want to gain insight into your next unit or ask for help."
-    },
-    {
-        main: "Events",
-        supporting: "View events that others are hosting or planning to attend. This way you can stay in the loop, or even form your next hackathon team!"
-    }
-]
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion.tsx";
+import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel.tsx";
+import {Card, CardContent} from "@/components/ui/card.tsx";
 
 type FrequentlyAskedQuestion = {
     question: string;
@@ -61,41 +41,54 @@ const faq: FrequentlyAskedQuestion[] = [
 export default function HomePage () {
     return (
         <>
-            <section className="flex flex-col items-center justify-center gap-2 mt-[12vh]">
-                <h1 className="text-[clamp(2.5rem,9vw-1rem,5rem)] font-bold text-center text-foreground">
-                    Basecamp
-                </h1>
-                <span className="text-[clamp(1rem,1vw+0.5rem,1.25rem)] text-center leading-tight text-muted-foreground text-pretty w-[60%]">
-                    Go beyond OnTrack, build something together and create stories you can share from your University journey.
-                </span>
-                <div className="flex gap-8 mt-8">
-                    <Button variant="outline" className="aspect-[8/2]">Learn More</Button>
-                    <Button variant="default" className="aspect-[8/2]">Sign Up</Button>
-                </div>
+            <section className="mt-16 lg:grid lg:grid-cols-12 w-full">
+                    <div className="col-span-7 flex flex-col justify-center w-full gap-4">
+                        <div className="flex flex-col gap-2">
+                            <div className="text-sm font-semibold w-fit flex flex-col">
+                                <span className="border rounded px-2 w-fit">Basecamp </span>
+                            </div>
+                            <h1 className="font-bold text-5xl w-fit">Go beyond OnTrack.</h1>
+                        </div>
+                        <p>Join DSEC to access community projects with beginner-friendly tickets. Learn Git and Software Engineering in a low-stress environment.</p>
+                        <div className="flex gap-2 w-fit">
+                            <Button variant="outline">Learn More</Button>
+                            <Button variant="default">Sign Up</Button>
+                        </div>
+                    </div>
+                    <div className="col-span-5 lg:flex justify-center items-center w-full hidden lg:">
+                        <img className="max-w-[400px]" src="/undraw-collaboration.svg" alt=""/>
+                    </div>
             </section>
-            <section className="flex flex-col items-center justify-center gap-4 mt-[10vh]">
-                <h2 className="text-[clamp(1.75rem,3vw+1rem,2.5rem)] font-bold text-center text-foreground" >
-                    Everything you need to collaborate
-                </h2>
-                <span className="text-[clamp(1rem,1vw+0.5rem,1.25rem)] text-center leading-tight text-muted-foreground text-pretty w-[60%] mb-12">
-                    Basecamp brings together the tools and community to make student collaboration effortless
-                </span>
-                <div className="w-[90%] grid gap-4 grid-cols-1 lg:grid-cols-3 ">
-                    {collaborationCards.map((project) =>
-                        <Card key={project.main} className="flex">
-                            <CardContent className="h-full w-full flex flex-col gap-4">
-                                <span className="block text-foreground text-2xl font-bold">{project.main}</span>
-                                <span className="block text-muted-foreground text-xl font">{project.supporting}</span>
-                            </CardContent>
-                        </Card>
-                    )}
-                </div>
+            <section className="w-full mt-32">
+                <Carousel
+                    className="w-full"
+                    opts={{
+                        align: "center",
+                        loop: true,
+                    }}
+                >
+                    <CarouselContent className="-ml-4">
+                        {Array.from({ length: 5 }).map((_, index) => (
+                            <CarouselItem key={index} className="pl-4 md:basis-[50%]">
+                                <div className="p-1">
+                                    <Card className="overflow-hidden rounded p-2">
+                                        <CardContent className="flex aspect-video items-center justify-center bg-black rounded overflow-hidden">
+                                            <span className="text-white text-4xl font-semibold">{index}</span>
+                                        </CardContent>
+                                    </Card>
+                                </div>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="left-4" />
+                    <CarouselNext className="right-4" />
+                </Carousel>
             </section>
-            <section className="flex flex-col items-center justify-center gap-4 mt-[2vh] h-[380px]">
+            <section className="flex flex-col items-center justify-center gap-4 mt-24 h-[380px]">
                 <Accordion
                     type="single"
                     collapsible
-                    className="w-[75%] "
+                    className="w-full"
                     defaultValue="item-1"
                 >
                     {faq.map((project) =>
@@ -106,10 +99,8 @@ export default function HomePage () {
                             </AccordionContent>
                         </AccordionItem>
                     )}
-
                 </Accordion>
             </section>
-
         </>
     )
 }
