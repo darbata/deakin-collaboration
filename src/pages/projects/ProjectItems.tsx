@@ -39,7 +39,7 @@ export default function ProjectBoard({projectId} : {projectId: string}) {
                 <Column projectId={projectId} title="In Progress" items={data.filter((item) => item.status === "In Progress")} />
 
             </div>
-            <Card className="bg-muted text-muted-foreground justify-center">
+            <Card className="bg-muted text-muted-foreground justify-center mt-16">
                 <CardContent className="flex gap-4 items-center justify-center">
                     <MessageCircleQuestionMark size={48} />
                     <span>Don't see something that fits your skills? Drop a suggestion in <i>#ticket-requests</i> and we'll get a ticket started for you.</span>

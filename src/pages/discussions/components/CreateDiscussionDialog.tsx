@@ -7,12 +7,12 @@ import { Button } from "@/components/ui/button";
 import useCreateNewDiscussion from "@/data/useCreateNewDiscussion.ts";
 
 const formSchema = z.object({
-    content: z.string().min(12)
+    content: z.string()
 })
 
 export default function CreateDiscussionDialog(
     {open, setOpen, unitCode}
-    : {open: boolean, setOpen: Dispatch<SetStateAction<boolean>>, unitCode: string, parentDiscussionId: string | null}
+    : {open: boolean, setOpen: Dispatch<SetStateAction<boolean>>, unitCode: string}
 ) {
     const create = useCreateNewDiscussion(unitCode);
     const form = useForm({

@@ -44,7 +44,7 @@ export default function UnitTopicsGallery({searchFilter} : {searchFilter: string
 
     console.log(data)
 
-    if (data == undefined || data?.length <= 0) return <div></div>
+    if (data == undefined || data?.length <= 0) return <div className="h-[80vh]"></div>
     const filtered = data.filter(unit => {
         return (
             unit.unitCode.toLowerCase().includes(searchFilter.toLowerCase()) ||

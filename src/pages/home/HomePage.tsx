@@ -51,7 +51,7 @@ export default function HomePage () {
                         </div>
                         <p>Join DSEC to access community projects with beginner-friendly tickets. Learn Git and Software Engineering in a low-stress environment.</p>
                         <div className="flex gap-2 w-fit">
-                            <Button variant="outline">Learn More</Button>
+                            <Button onClick={() => window.location.href = "https://www.dsec.club"} variant="outline">Learn More</Button>
                             <Button variant="default">Sign Up</Button>
                         </div>
                     </div>

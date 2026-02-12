@@ -47,9 +47,6 @@ export default function Profile() {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>
-                    <DropdownMenuItem>
-                        <Link to="/profile">Profile</Link>
-                    </DropdownMenuItem>
                     {
                         user?.githubConnected
                         ? <DropdownMenuItem onClick={() => disconnectGithub.mutate()}>Disconnect GitHub</DropdownMenuItem>

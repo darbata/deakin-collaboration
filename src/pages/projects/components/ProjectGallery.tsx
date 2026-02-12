@@ -58,7 +58,7 @@ export function ProjectGallery(
         enabled: !!token,
     });
 
-    if (data == undefined || data?.content.length <= 0) return <div></div>
+    if (data == undefined || data?.content.length <= 0) return <div className="h-[80vh]"></div>
 
     const filtered: UserProject[] | FeaturedProject[] = data.content?.filter(
         project => {

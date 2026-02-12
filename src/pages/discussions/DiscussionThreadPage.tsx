@@ -41,7 +41,7 @@ export function DiscussionThreadPage() {
 
     console.log("DiscussionThreadPage" + discussionId)
 
-    if (!data) return <></>
+    if (!data) return <div className="h-[80vh]"></div>
 
     return (
         <DiscussionNode rootDiscussionId={discussionId ?? ""} discussion={data.rootDiscussion} depth={1} />
