@@ -23,7 +23,7 @@ export default function DiscussionsPage() {
         <div className="flex flex-col gap-2">
             <div className="flex flex-col gap-2">
                 <h2 className="text-2xl font-medium">Discussions</h2>
-                <p className="text-muted-foreground">See what the community is talking about. Start your own topic to spark a discussion.</p>
+                <p className="text-muted-foreground">Ask questions about unit content or leave some wisdom for future students.</p>
             </div>
             <CategorySelector categories={categories} activeCategory={activeCategory} handleSet={setActiveCategory} />
             <SearchFilter searchFilter={searchFilter} setSearchFilter={setSearchFilter} />
