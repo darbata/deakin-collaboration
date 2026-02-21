@@ -6,18 +6,18 @@ import {
     DropdownMenu,
     DropdownMenuTrigger,
     DropdownMenuContent,
-    DropdownMenuLabel,
     DropdownMenuItem
 } from "@/components/ui/dropdown-menu.tsx";
 import {signOutConfig} from "@/config/cognitoAuthConfig.ts";
 import {clientId} from "@/config/githubClientIdConfig.ts";
-import {Link} from "react-router";
 import {useDisconnectGithub} from "@/data/useDisconnectGithub.ts";
+import {useNavigate} from "react-router-dom";
 
 export default function Profile() {
 
     const auth = useAuth();
     const idToken = auth.user?.id_token ?? "";
+    const navigate = useNavigate();
 
     const disconnectGithub = useDisconnectGithub(idToken);
 
@@ -35,6 +35,10 @@ export default function Profile() {
         window.location.href = url
     }
 
+    const redirectProfile = () => {
+        navigate("/profile");
+    }
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -46,20 +50,23 @@ export default function Profile() {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuLabel>
-                    {
-                        user?.githubConnected
-                        ? <DropdownMenuItem onClick={() => disconnectGithub.mutate()}>Disconnect GitHub</DropdownMenuItem>
-                        : <DropdownMenuItem onClick={redirectGithubAuth}>Connect GitHub</DropdownMenuItem>
-                    }
-                    <DropdownMenuItem
-                        onClick={() => auth.signoutRedirect({
-                            extraQueryParams: signOutConfig
-                        })}
-                    >
-                        Sign Out
-                    </DropdownMenuItem>
-                </DropdownMenuLabel>
+                <DropdownMenuItem
+                    onClick={redirectProfile}
+                >
+                    Profile
+                </DropdownMenuItem>
+                {
+                    user?.githubConnected
+                    ? <DropdownMenuItem onClick={() => disconnectGithub.mutate()}>Disconnect GitHub</DropdownMenuItem>
+                    : <DropdownMenuItem onClick={redirectGithubAuth}>Connect GitHub</DropdownMenuItem>
+                }
+                <DropdownMenuItem
+                    onClick={() => auth.signoutRedirect({
+                        extraQueryParams: signOutConfig
+                    })}
+                >
+                    Sign Out
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )

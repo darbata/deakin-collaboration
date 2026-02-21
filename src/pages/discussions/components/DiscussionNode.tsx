@@ -35,10 +35,16 @@ export function DiscussionNode ({rootDiscussionId, discussion, depth }: {rootDis
         }
     ]
 
+
+    const date = new Date(discussion.createdAt);
+
     return (
-        <div className={`ml-4 border-l-2 py-2 pl-4 flex flex-col gap-4` }>
-            <div className={`flex flex-col`}>
-                <span className="font-semibold">{discussion.user.displayName}</span>
+        <div className={`ml-4 border-l-2 py-2 pl-4 flex flex-col gap-2` }>
+            <div className="flex flex-col">
+                <div className="flex flex-col text-xs">
+                    <span className="font-bold">{discussion.user.displayName}</span>
+                    <span className="text-muted-foreground">Posted on {date.toLocaleDateString()}</span>
+                </div>
                 <p>{discussion.content}</p>
             </div>
             <div className="flex gap-4">
