@@ -5,22 +5,45 @@ import {useAuth} from "react-oidc-context";
 import PageHeader from "@/components/PageHeader.tsx";
 import {Avatar, AvatarImage} from "@/components/ui/avatar.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {ImageUpIcon, MailIcon, PencilIcon, UserIcon} from "lucide-react";
+import {GithubIcon, ImageUpIcon, MailIcon, PencilIcon, UserIcon} from "lucide-react";
 import {Separator} from "@/components/ui/separator.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {clientId} from "@/config/githubClientIdConfig.ts";
+import {useNavigate} from "react-router-dom";
+import {useDisconnectGithub} from "@/data/useDisconnectGithub.ts";
 
 export default function ProfilePage() {
 
     const auth = useAuth();
     const token = auth.user?.id_token ?? "";
-    const response = useAuthenticatedUser(token)
+    const {data, isLoading} = useAuthenticatedUser(token);
+    const navigate = useNavigate();
+    const disconnectGithub = useDisconnectGithub(token);
 
-    const editDisplayName = useState(false);
-    const editEmail = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
 
-    if (!response || !response.data) return <div></div>
+    const [userDisplayName, setUserDisplayName] = useState("");
+    useEffect(() => {
+        if (data) {
+            setUserDisplayName(data.displayName)
+        }
+    }, [data])
 
-    const user: User = response.data;
+    const handleNameEdit = (event) => {
+        setUserDisplayName(prev => (event.target.value));
+    }
+
+    const redirectGithubAuth = () => {
+        const url = `https://github.com/login/oauth/authorize?client_id=${clientId}`
+        window.location.href = url
+    }
+
+    const redirectProfile = () => {
+        navigate("/profile");
+    }
+
+    if (isLoading || !data) return <div></div>
+
 
     return (
         <section className="flex flex-col items-center w-full gap-8">
@@ -32,11 +55,11 @@ export default function ProfilePage() {
                 <CardContent>
                     <div className="flex items-center gap-4">
                         <Avatar className="h-24 w-24 border border-border">
-                            <AvatarImage src={user.avatarUrl}/>
+                            <AvatarImage src={data.avatarUrl}/>
                         </Avatar>
                         <div className="flex flex-col gap-2">
-                            <span className="font-semibold">{user.displayName}</span>
-                            <span className="text-sm">{user.email}</span>
+                            <span className="font-semibold">{data.displayName}</span>
+                            <span className="text-sm">{data.email}</span>
                             <Button className="w-fit" variant="outline">
                                 <ImageUpIcon />
                                 <span>Upload Photo</span>
@@ -55,16 +78,22 @@ export default function ProfilePage() {
                         <div className="bg-muted p-4 rounded-xl">
                             <UserIcon size={24}   />
                         </div>
+                        <div className="flex flex-col">
+                            <span className="font-semibold">Display Name</span>
                         {
-                            editDisplayName ?
-                            <div className="flex flex-col">
-                                <span className="font-semibold">Display Name</span>
-                                <span>{user.displayName}</span>
-                            </div>
-                            : <div>dont</div>
+                            isEditing ?
+                                <input
+                                    type="text"
+                                    value={userDisplayName}
+                                    onChange={handleNameEdit}
+                                    className="border rounded border-primary px-2"
+                                />
+                            :
+                                <span>{userDisplayName}</span>
                         }
 
-                        <Button variant="outline" className="ml-auto aspect-square w-fit"><PencilIcon /></Button>
+                        </div>
+                        <Button onClick={() => {setIsEditing(true)}} variant="outline" className="ml-auto aspect-square w-fit"><PencilIcon /></Button>
                     </div>
                     <Separator />
                     <div className="flex items-center gap-2">
@@ -73,13 +102,32 @@ export default function ProfilePage() {
                         </div>
                         <div className="flex flex-col">
                             <span className="font-semibold">Email Address</span>
-                            <span>{user.email}</span>
+                            <span>{data.email}</span>
                         </div>
-                        <Button variant="outline" className="ml-auto aspect-square w-fit"><PencilIcon /></Button>
                     </div>
                 </CardContent>
             </Card>
+            <Card className="w-full max-w-[900px]">
+                <CardHeader>
+                    <span className="font-semibold">Connections</span>
+                </CardHeader>
+                <CardContent className="flex flex-col gap-4">
+                    <div className="flex items-center gap-2">
+                        <div className="bg-muted p-4 rounded-xl">
+                            <GithubIcon size={24}   />
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="font-semibold">Github</span>
+                        </div>
+                        {
+                            data.githubConnected
+                                ? <Button className="ml-auto" onClick={() => disconnectGithub.mutate()}>Disconnect GitHub</Button>
+                                : <Button className="ml-auto" onClick={redirectGithubAuth}>Connect GitHub</Button>
+                        }
+                    </div>
+                </CardContent>
+            </Card>
+            <Button hidden={!isEditing} disabled={!isEditing} className="ml-auto">Save Changes</Button>
         </section>
-
     )
 }
