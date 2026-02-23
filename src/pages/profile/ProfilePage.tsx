@@ -17,17 +17,38 @@ export default function ProfilePage() {
     const auth = useAuth();
     const token = auth.user?.id_token ?? "";
     const {data, isLoading} = useAuthenticatedUser(token);
-    const navigate = useNavigate();
     const disconnectGithub = useDisconnectGithub(token);
 
     const [isEditing, setIsEditing] = useState(false);
 
     const [userDisplayName, setUserDisplayName] = useState("");
+
     useEffect(() => {
         if (data) {
             setUserDisplayName(data.displayName)
         }
     }, [data])
+
+    const updateDisplayName = () => {
+        return;
+        // add endpoint
+    }
+
+    const [file, setFile] = useState(null);
+    const [preview, setPreview] = useState("");
+    const handleFileChange = (event) => {
+        const selected = event.target.files[0];
+        if (!selected) return;
+        setFile(selected);
+        const previewUrl = URL.createObjectURL(selected);
+        setPreview(previewUrl);
+        console.log(selected);
+    }
+
+    const handleFileUpload = () => {
+        setFile(null);
+        // add endpoint
+    }
 
     const handleNameEdit = (event) => {
         setUserDisplayName(prev => (event.target.value));
@@ -38,12 +59,8 @@ export default function ProfilePage() {
         window.location.href = url
     }
 
-    const redirectProfile = () => {
-        navigate("/profile");
-    }
 
     if (isLoading || !data) return <div></div>
-
 
     return (
         <section className="flex flex-col items-center w-full gap-8">
@@ -55,15 +72,39 @@ export default function ProfilePage() {
                 <CardContent>
                     <div className="flex items-center gap-4">
                         <Avatar className="h-24 w-24 border border-border">
-                            <AvatarImage src={data.avatarUrl}/>
+                            <AvatarImage src={preview == "" ? data.avatarUrl : preview}/>
                         </Avatar>
+
+
                         <div className="flex flex-col gap-2">
                             <span className="font-semibold">{data.displayName}</span>
                             <span className="text-sm">{data.email}</span>
-                            <Button className="w-fit" variant="outline">
-                                <ImageUpIcon />
-                                <span>Upload Photo</span>
-                            </Button>
+                            <input
+                                type="file"
+                                id="pfp"
+                                name="pfp"
+                                onChange={handleFileChange}
+                                hidden
+                                accept="image/jpeg, image/png"
+                            />
+                            <div className="flex flex-col gap-1">
+                                {
+                                    file
+                                        ?   <Button className="flex items-center gap-1" onClick={handleFileUpload}>
+                                                <ImageUpIcon />
+                                                <span>Update Photo</span>
+                                            </Button>
+                                        :   <>
+                                                <Button className="w-full" variant="outline">
+                                                <label htmlFor="pfp" className="flex items-center gap-1">
+                                                    <ImageUpIcon />
+                                                    <span>Upload Photo</span>
+                                                </label>
+                                                </Button>
+                                                <span className="text-xs ml-auto text-muted-foreground">.png, .jpg</span>
+                                            </>
+                                }
+                            </div>
                         </div>
                     </div>
                 </CardContent>
@@ -127,7 +168,7 @@ export default function ProfilePage() {
                     </div>
                 </CardContent>
             </Card>
-            <Button hidden={!isEditing} disabled={!isEditing} className="ml-auto">Save Changes</Button>
+            <Button onClick={updateDisplayName} hidden={!isEditing} disabled={userDisplayName == data.displayName} className="ml-auto">Save Changes</Button>
         </section>
     )
 }

@@ -30,11 +30,6 @@ export default function Profile() {
     if (!auth.isAuthenticated) return <Button onClick={() => auth.signinRedirect()}>Sign in</Button>;
     if (isLoading || isError) return <div className="flex items-center"><User /></div>;
 
-    const redirectGithubAuth = () => {
-        const url = `https://github.com/login/oauth/authorize?client_id=${clientId}`
-        window.location.href = url
-    }
-
     const redirectProfile = () => {
         navigate("/profile");
     }
@@ -55,11 +50,6 @@ export default function Profile() {
                 >
                     Profile
                 </DropdownMenuItem>
-                {
-                    user?.githubConnected
-                    ? <DropdownMenuItem onClick={() => disconnectGithub.mutate()}>Disconnect GitHub</DropdownMenuItem>
-                    : <DropdownMenuItem onClick={redirectGithubAuth}>Connect GitHub</DropdownMenuItem>
-                }
                 <DropdownMenuItem
                     onClick={() => auth.signoutRedirect({
                         extraQueryParams: signOutConfig
