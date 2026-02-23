@@ -168,7 +168,9 @@ export default function ProfilePage() {
                     </div>
                 </CardContent>
             </Card>
-            <Button onClick={updateDisplayName} hidden={!isEditing} disabled={userDisplayName == data.displayName} className="ml-auto">Save Changes</Button>
+            <div className="flex w-full max-w-[900px]">
+                <Button onClick={updateDisplayName} hidden={!isEditing} disabled={userDisplayName == data.displayName} className="ml-auto self-baseline">Save Changes</Button>
+            </div>
         </section>
     )
 }
