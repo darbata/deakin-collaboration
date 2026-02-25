@@ -1,5 +1,4 @@
 import {Card, CardContent, CardHeader} from "@/components/ui/card.tsx";
-import type {User} from "@/types/User.ts";
 import useAuthenticatedUser from "@/data/useAuthenticatedUser.ts";
 import {useAuth} from "react-oidc-context";
 import PageHeader from "@/components/PageHeader.tsx";
@@ -9,8 +8,9 @@ import {GithubIcon, ImageUpIcon, MailIcon, PencilIcon, UserIcon} from "lucide-re
 import {Separator} from "@/components/ui/separator.tsx";
 import {useEffect, useState} from "react";
 import {clientId} from "@/config/githubClientIdConfig.ts";
-import {useNavigate} from "react-router-dom";
 import {useDisconnectGithub} from "@/data/useDisconnectGithub.ts";
+import {useAvatarUpload} from "@/data/useAvatarUpload.ts";
+import {useUpdateDisplayName} from "@/data/useUpdateDisplayName.ts";
 
 export default function ProfilePage() {
 
@@ -18,6 +18,8 @@ export default function ProfilePage() {
     const token = auth.user?.id_token ?? "";
     const {data, isLoading} = useAuthenticatedUser(token);
     const disconnectGithub = useDisconnectGithub(token);
+    const avatarUpload = useAvatarUpload();
+    const updateDisplayName = useUpdateDisplayName();
 
     const [isEditing, setIsEditing] = useState(false);
 
@@ -29,12 +31,13 @@ export default function ProfilePage() {
         }
     }, [data])
 
-    const updateDisplayName = () => {
+    const updateUsername = () => {
+        updateDisplayName.mutate(userDisplayName);
+        setIsEditing(false);
         return;
-        // add endpoint
     }
 
-    const [file, setFile] = useState(null);
+    const [file, setFile] = useState<File | null>(null);
     const [preview, setPreview] = useState("");
     const handleFileChange = (event) => {
         const selected = event.target.files[0];
@@ -46,8 +49,9 @@ export default function ProfilePage() {
     }
 
     const handleFileUpload = () => {
+        if (!file) return;
+        avatarUpload.mutate(file);
         setFile(null);
-        // add endpoint
     }
 
     const handleNameEdit = (event) => {
@@ -58,7 +62,6 @@ export default function ProfilePage() {
         const url = `https://github.com/login/oauth/authorize?client_id=${clientId}`
         window.location.href = url
     }
-
 
     if (isLoading || !data) return <div></div>
 
@@ -169,7 +172,7 @@ export default function ProfilePage() {
                 </CardContent>
             </Card>
             <div className="flex w-full max-w-[900px]">
-                <Button onClick={updateDisplayName} hidden={!isEditing} disabled={userDisplayName == data.displayName} className="ml-auto self-baseline">Save Changes</Button>
+                <Button onClick={updateUsername} hidden={!isEditing} disabled={userDisplayName == data.displayName} variant={isEditing ? "default" : "outline"} className="ml-auto self-baseline">Save Changes</Button>
             </div>
         </section>
     )
