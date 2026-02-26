@@ -11,6 +11,7 @@ import {UnitDetailsPage} from "@/pages/discussions/UnitDetailsPage.tsx";
 import {DiscussionThreadPage} from "@/pages/discussions/DiscussionThreadPage.tsx";
 import ProjectDashboardPage from "@/pages/projects/ProjectDashboardPage.tsx";
 import ProfilePage from "@/pages/profile/ProfilePage.tsx";
+import {CreateFeaturedProjectPage} from "@/pages/projects/CreateFeaturedProjectPage.tsx";
 
 function Layout() {
     return (
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
             {
                 path: "projects/:projectId",
                 Component: ProjectDashboardPage
+            },
+            {
+                path: "projects/create",
+                Component: CreateFeaturedProjectPage
             },
             {
                 path: "github",

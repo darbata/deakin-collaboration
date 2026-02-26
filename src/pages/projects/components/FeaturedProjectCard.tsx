@@ -1,53 +1,39 @@
 import {Card, CardContent, CardFooter, CardHeader} from "@/components/ui/card.tsx";
-import {Separator} from "@/components/ui/separator.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {CalendarArrowUp, GithubIcon, LayoutDashboard, StarIcon} from "lucide-react";
+import {GithubIcon, LayoutDashboard} from "lucide-react";
 import {type FeaturedProject} from "@/types/FeaturedProject.ts";
 import {useNavigate} from "react-router-dom";
 
 export function FeaturedProjectCard({project} : {project : FeaturedProject}) {
-
     const navigate = useNavigate();
 
-    const lastUpdated = new Date(project.repoPushedAt);
-    const now = new Date();
-    const diff = now.getTime() - lastUpdated.getTime();
-    const daysSinceLastUpdate = Math.ceil(diff / (1000 * 3600 * 24));
+    const backgroundImage = project.bannerUrl === ""
+        ? "linear-gradient(to top right, rgba(0, 0, 0, 0.9), transparent)"
+        : `linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%), url(${project.bannerUrl})`;
 
     return (
-        <Card className="py-0 overflow-hidden">
+        <Card className="py-0 overflow-hidden justify-between">
             <CardHeader
-                className="relative h-[200px] bg-primary"
+                className="relative bg-primary h-48 aspect-[4/3] bg-cover bg-no-repeat bg-bottom"
                 style={{
-                    backgroundImage: `linear-gradient(to top right, rgba(0, 0, 0, 0.9), transparent)`
+                    backgroundImage: backgroundImage
                 }}
             >
-                <div className="absolute left-6 bottom-4 text-background flex flex-col gap-2`">
-                    <h3 className="font-bold text-2xl">
+                <div className="absolute left-6 bottom-4 text-background flex flex-col justify-end">
+                    <h3 className="font-bold text-2xl line-clamp-1">
                         {project.title}
                     </h3>
-                    <p className="text-lg text-background">
+                    <p className="text-lg text-background line-clamp-1">
                         {project.tagline}
                     </p>
                 </div>
             </CardHeader>
-            <CardContent className="flex h-[200px] flex-col justify-between gap-10">
-                <p className="text-foreground">{project.description}</p>
-                <div className="flex flex-col gap-4 justify-center text-sm">
-                    <Separator />
-                    <div className="flex justify-between items-center text-muted-foreground">
-                        <div className="flex gap-1 items-center">
-                            <CalendarArrowUp size={14} />
-                            <span>{daysSinceLastUpdate} days since last update</span>
-                        </div>
-                        <div className="flex gap-1 items-center bg-muted rounded-xl px-3">
-                            <StarIcon size={14} />
-                            <span>{project.repoStars}</span>
-                        </div>
-                    </div>
+            <CardContent className="h-full flex-1">
+                <div className="flex flex-col">
+                    <p className="text-foreground text-sm line-clamp-3">{project.description}</p>
                 </div>
             </CardContent>
-            <CardFooter className="p-2 w-full bg-muted flex justify-evenly items-center h-[80px] gap-2">
+            <CardFooter className="p-4 w-full bg-muted flex justify-evenly items-center gap-2">
                 <Button
                     variant="outline"
                     className="flex items-center w-full shrink h-10 "
