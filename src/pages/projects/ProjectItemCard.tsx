@@ -3,7 +3,7 @@ import type {ProjectAssignee} from "@/types/ProjectAssignee.ts";
 import {ProjectItemLabel} from "@/pages/projects/ProjectItemLabel.tsx";
 import {Avatar, AvatarGroup, AvatarGroupCount, AvatarImage} from "@/components/ui/avatar.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {CircleDot} from "lucide-react";
+import {CircleDot, SquareArrowOutUpRightIcon, SquareDashedKanbanIcon} from "lucide-react";
 import useClaimIssue from "@/data/useClaimIssue.ts";
 import {useState} from "react";
 import ClaimIssueDialogue from "@/pages/projects/components/ClaimIssueDialogue.tsx";
@@ -24,17 +24,19 @@ export function ProjectItemCard({projectId, item}: { projectId: string, item: Pr
 
     return (
         <div
-            className="flex flex-col gap-2 border border-l-8 border-l-primary rounded-xl py-1 px-2 justify-evenly bg-background">
-            <div>
+            className="flex flex-col gap-2 border border-l-4 border-l-primary rounded-xl py-1 px-2 justify-evenly bg-background group">
+            <div className="flex justify-between">
                 <span
                     className="font-semibold cursor-pointer text-sm"
-                    onClick={handleMoreInfoClick}
                 >
                     {item.title}
                 </span>
-            </div>
-            <div>
-
+                <span
+                    className="w-fit h-fit text-muted-foreground opacity-0 group-hover:opacity-100 transition duration-300 cursor-pointer"
+                    onClick={handleMoreInfoClick}
+                >
+                    <SquareArrowOutUpRightIcon size={14} />
+                </span>
             </div>
             <div className="flex flex-col gap-2 text-sm">
                 <span >{item.body}</span>
@@ -52,8 +54,12 @@ export function ProjectItemCard({projectId, item}: { projectId: string, item: Pr
                             {assignees.length > 1 && <AvatarGroupCount>{assignees.length - 1}</AvatarGroupCount>}
                         </AvatarGroup>
                         :
-                        <Button className="flex gap-2 w-fit h-fit" onClick={() => setOpen(true)}>
-                            <CircleDot size={10}/>
+                        <Button
+                            className="flex gap-2 w-fit h-fit border-primary border-dashed text-primary hover:bg-primary hover:text-primary-foreground hover:border-solid transition duration-300"
+                            onClick={() => setOpen(true)}
+                            variant="outline"
+                        >
+                            <SquareDashedKanbanIcon size={10}/>
                             <span className="text-xs font-semibold">CLAIM ISSUE</span>
                         </Button>
                 }
