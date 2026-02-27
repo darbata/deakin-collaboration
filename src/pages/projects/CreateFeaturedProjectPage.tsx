@@ -8,13 +8,17 @@ import {Button} from "@/components/ui/button.tsx";
 import {ImageUpIcon} from "lucide-react";
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {useDsecGithubRepos} from "@/data/useDsecGithubRepos.ts";
+import {useUploadProjectBanner} from "@/data/useUploadProjectBanner.ts";
+import useCreateFeaturedProject from "@/data/useCreateFeaturedProject.ts";
+import {toast} from "sonner";
 
 export function CreateFeaturedProjectPage() {
 
-    const {data, isLoading, isError} = useDsecGithubRepos();
-    const dsecRepos = data;
+    const dsecGithubRepos = useDsecGithubRepos();
+    const dsecRepos = dsecGithubRepos.data;
     const [selectedRepoId, setSelectedRepoId] = useState(-1);
-
+    const uploadBanner = useUploadProjectBanner();
+    const createFeaturedProject = useCreateFeaturedProject();
     const [preview, setPreview] = useState<FeaturedProject>({
         id: "",
         title: "Awesome Project",
@@ -33,8 +37,11 @@ export function CreateFeaturedProjectPage() {
 
     const [banner, setBanner] = useState<File | null>(null);
 
-    const handleBannerUpload = (event) => {
-        setBanner(event.target.files[0])
+    const handleBannerUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const upload = event.target.files[0] ?? null;
+        if (upload) {
+            setBanner(upload)
+        }
     }
 
     useEffect(() => {
@@ -64,6 +71,28 @@ export function CreateFeaturedProjectPage() {
             setValue: (event) => setPreview(prev => ({...prev, description: event.target.value}))
         },
     ]
+
+    const onSubmit = async () => {
+        const newProject = await createFeaturedProject.mutateAsync({
+            title: preview.title,
+            tagline: preview.tagline,
+            description: preview.description,
+            githubRepoId: selectedRepoId,
+            projectNumber: 0
+        });
+
+        console.log("New Project Response:", newProject);
+
+
+        if (newProject?.id && banner) {
+            console.log("uploading banner as well");
+            uploadBanner.mutate({
+                projectId: newProject.id,
+                file: banner
+            })
+            toast.success("Project created");
+        }
+    }
 
     return (
         <section>
@@ -100,29 +129,29 @@ export function CreateFeaturedProjectPage() {
 
                     <div className="border rounded p-2 flex flex-col gap-4">
                         <span className="font-semibold text-lg">Repository Details</span>
-                        <Select>
+                        <Select
+                            value={selectedRepoId.toString()}
+                            onValueChange={(value) => setSelectedRepoId(parseInt(value))}
+                        >
                             <SelectTrigger className="w-full">
                                 <SelectValue placeholder="DSEC Repository"></SelectValue>
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    {
-                                        dsecRepos && !isLoading
-                                            ? dsecRepos.map(
-                                                (repo) => (
-                                                    <SelectItem
-                                                        onClick={() => {setSelectedRepoId(repo.id)}}
-                                                        value={repo.id.toString()}>
-                                                        {repo.full_name}
-                                                    </SelectItem>)
-                                                )
-                                            : <div>loading...</div>
+                                    {dsecRepos?.map(
+                                        (repo) => (
+                                            <SelectItem
+                                                key={repo.id}
+                                                value={repo.id.toString()}>
+                                                {repo.full_name}
+                                            </SelectItem>)
+                                        )
                                     }
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
                     </div>
-                    <Button className="w-full">Confirm and Created Featured Project</Button>
+                    <Button className="w-full" onClick={onSubmit}>Confirm and Created Featured Project</Button>
                 </div>
                 <div className="col-span-5 w-full p-2 flex flex-col items-center gap-8">
                     <FeaturedProjectCard project={preview} />
