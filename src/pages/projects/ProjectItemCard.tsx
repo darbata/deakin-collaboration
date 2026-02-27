@@ -24,18 +24,20 @@ export function ProjectItemCard({projectId, item}: { projectId: string, item: Pr
 
     return (
         <div
-            className="flex flex-col gap-2 border border-l-8 border-l-primary rounded-xl py-2 px-4 justify-evenly bg-background">
+            className="flex flex-col gap-2 border border-l-8 border-l-primary rounded-xl py-1 px-2 justify-evenly bg-background">
             <div>
                 <span
-                    className="font-semibold cursor-pointer"
+                    className="font-semibold cursor-pointer text-sm"
                     onClick={handleMoreInfoClick}
                 >
                     {item.title}
                 </span>
             </div>
-            <div className="flex flex-col gap-2">
-                <span>{item.body}</span>
+            <div>
 
+            </div>
+            <div className="flex flex-col gap-2 text-sm">
+                <span >{item.body}</span>
             </div>
             <div className="flex justify-between items-center">
                 <div className="flex gap-2">
@@ -50,9 +52,9 @@ export function ProjectItemCard({projectId, item}: { projectId: string, item: Pr
                             {assignees.length > 1 && <AvatarGroupCount>{assignees.length - 1}</AvatarGroupCount>}
                         </AvatarGroup>
                         :
-                        <Button onClick={() => setOpen(true)}>
-                            <CircleDot/>
-                            <span>Claim Issue</span>
+                        <Button className="flex gap-2 w-fit h-fit" onClick={() => setOpen(true)}>
+                            <CircleDot size={10}/>
+                            <span className="text-xs font-semibold">CLAIM ISSUE</span>
                         </Button>
                 }
             </div>
