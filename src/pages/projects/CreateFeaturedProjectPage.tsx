@@ -11,12 +11,18 @@ import {useDsecGithubRepos} from "@/data/useDsecGithubRepos.ts";
 import {useUploadProjectBanner} from "@/data/useUploadProjectBanner.ts";
 import useCreateFeaturedProject from "@/data/useCreateFeaturedProject.ts";
 import {toast} from "sonner";
+import {useDsecGithubProjects} from "@/data/useDsecGithubProjects.ts";
 
 export function CreateFeaturedProjectPage() {
 
+    const [selectedRepoId, setSelectedRepoId] = useState(-1);
     const dsecGithubRepos = useDsecGithubRepos();
     const dsecRepos = dsecGithubRepos.data;
-    const [selectedRepoId, setSelectedRepoId] = useState(-1);
+
+    const [selectedProjectNumber, setSelectedProjectNumber] = useState(-1);
+    const dsecGithubProjects = useDsecGithubProjects();
+    const dsecProjects = dsecGithubProjects.data
+
     const uploadBanner = useUploadProjectBanner();
     const createFeaturedProject = useCreateFeaturedProject();
     const [preview, setPreview] = useState<FeaturedProject>({
@@ -78,7 +84,7 @@ export function CreateFeaturedProjectPage() {
             tagline: preview.tagline,
             description: preview.description,
             githubRepoId: selectedRepoId,
-            projectNumber: 0
+            projectNumber: selectedProjectNumber
         });
 
         console.log("New Project Response:", newProject);
@@ -129,27 +135,55 @@ export function CreateFeaturedProjectPage() {
 
                     <div className="border rounded p-2 flex flex-col gap-4">
                         <span className="font-semibold text-lg">Repository Details</span>
-                        <Select
-                            value={selectedRepoId.toString()}
-                            onValueChange={(value) => setSelectedRepoId(parseInt(value))}
-                        >
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="DSEC Repository"></SelectValue>
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    {dsecRepos?.map(
-                                        (repo) => (
-                                            <SelectItem
-                                                key={repo.id}
-                                                value={repo.id.toString()}>
-                                                {repo.full_name}
-                                            </SelectItem>)
+                        <div>
+                            <span className="font-semibold text-sm">REPOSITORY</span>
+                            <Select
+                                value={selectedRepoId.toString()}
+                                onValueChange={(value) => setSelectedRepoId(parseInt(value))}
+                            >
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="DSEC Repository"></SelectValue>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        {dsecRepos?.map(
+                                            (repo) => (
+                                                <SelectItem
+                                                    key={repo.id}
+                                                    value={repo.id.toString()}>
+                                                    {repo.full_name}
+                                                </SelectItem>)
                                         )
-                                    }
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
+                                        }
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        <div>
+                            <span className="font-semibold text-sm">PROJECT</span>
+                            <Select
+                                value={selectedProjectNumber.toString()}
+                                onValueChange={(value) => setSelectedProjectNumber(parseInt(value))}
+                            >
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="DSEC Repository"></SelectValue>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        {
+                                            dsecProjects?.map(
+                                                (project) => (
+                                                    <SelectItem key={project.number} value={project.number.toString()}>
+                                                        {project.number} {project.title}
+                                                    </SelectItem>)
+                                            )
+                                        }
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
                     </div>
                     <Button className="w-full" onClick={onSubmit}>Confirm and Created Featured Project</Button>
                 </div>
