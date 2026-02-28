@@ -9,17 +9,14 @@ import {
     DropdownMenuItem
 } from "@/components/ui/dropdown-menu.tsx";
 import {signOutConfig} from "@/config/cognitoAuthConfig.ts";
-import {clientId} from "@/config/githubClientIdConfig.ts";
-import {useDisconnectGithub} from "@/data/useDisconnectGithub.ts";
 import {useNavigate} from "react-router-dom";
+import {Avatar, AvatarImage} from "@/components/ui/avatar.tsx";
 
 export default function Profile() {
 
     const auth = useAuth();
     const idToken = auth.user?.id_token ?? "";
     const navigate = useNavigate();
-
-    const disconnectGithub = useDisconnectGithub(idToken);
 
     const {
         data: user,
@@ -39,7 +36,9 @@ export default function Profile() {
             <DropdownMenuTrigger asChild>
                 <Button variant="outline">
                     <div className="flex items-center gap-2">
-                        <User />
+                        <Avatar size="sm">
+                            <AvatarImage src={user?.avatarUrl} />
+                        </Avatar>
                         <span>{user?.displayName}</span>
                     </div>
                 </Button>
