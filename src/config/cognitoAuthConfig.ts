@@ -10,12 +10,12 @@ export type AuthConfig = {
 export const cognitoAuthConfig = {
     authority: "https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_BCgTuKJeO",
     client_id: "k2s1qkeil1sl3g6t6fkafhu28",
-    redirect_uri: "http://dsecbasecamp.app/",
+    redirect_uri: "https://dsecbasecamp.app/",
     response_type: "code",
     scope: "email openid phone profile",
 };
 
 export const signOutConfig = {
     client_id: "k2s1qkeil1sl3g6t6fkafhu28",
-    logout_uri: "http://dsecbasecamp.app"
+    logout_uri: "https://dsecbasecamp.app"
 }
