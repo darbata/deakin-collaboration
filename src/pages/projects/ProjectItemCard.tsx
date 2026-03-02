@@ -3,7 +3,7 @@ import type {ProjectAssignee} from "@/types/ProjectAssignee.ts";
 import {ProjectItemLabel} from "@/pages/projects/ProjectItemLabel.tsx";
 import {Avatar, AvatarGroup, AvatarGroupCount, AvatarImage} from "@/components/ui/avatar.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {CircleDot, SquareArrowOutUpRightIcon, SquareDashedKanbanIcon} from "lucide-react";
+import {SquareArrowOutUpRightIcon, SquareDashedKanbanIcon} from "lucide-react";
 import useClaimIssue from "@/data/useClaimIssue.ts";
 import {useState} from "react";
 import ClaimIssueDialogue from "@/pages/projects/components/ClaimIssueDialogue.tsx";

@@ -22,7 +22,7 @@ export default function Profile() {
         data: user,
         isLoading,
         isError
-    } = useAuthenticatedUser(auth.user?.id_token ?? "");
+    } = useAuthenticatedUser(idToken);
 
     if (!auth.isAuthenticated) return <Button onClick={() => auth.signinRedirect()}>Sign in</Button>;
     if (isLoading || isError) return <div className="flex items-center"><User /></div>;

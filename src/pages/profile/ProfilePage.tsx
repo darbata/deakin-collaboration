@@ -39,8 +39,8 @@ export default function ProfilePage() {
 
     const [file, setFile] = useState<File | null>(null);
     const [preview, setPreview] = useState("");
-    const handleFileChange = (event) => {
-        const selected = event.target.files[0];
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selected = event.target.files?.[0];
         if (!selected) return;
         setFile(selected);
         const previewUrl = URL.createObjectURL(selected);
@@ -54,8 +54,8 @@ export default function ProfilePage() {
         setFile(null);
     }
 
-    const handleNameEdit = (event) => {
-        setUserDisplayName(prev => (event.target.value));
+    const handleNameEdit = (event : React.ChangeEvent<HTMLInputElement>) => {
+        setUserDisplayName(() => (event.target.value));
     }
 
     const redirectGithubAuth = () => {

@@ -1,8 +1,9 @@
 import axios from "axios";
 import {useQuery} from "@tanstack/react-query";
 import type {User} from "@/types/User.ts";
+import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
 
-const endpoint = "http://localhost:8080/api/auth";
+const endpoint = `${apiBaseUrl}/auth`;
 
 async function fetchAuthenticatedUser(idToken : string) : Promise<User> {
     const response = await axios.get(endpoint, {

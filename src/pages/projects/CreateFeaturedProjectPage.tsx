@@ -44,7 +44,7 @@ export function CreateFeaturedProjectPage() {
     const [banner, setBanner] = useState<File | null>(null);
 
     const handleBannerUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const upload = event.target.files[0] ?? null;
+        const upload = event.target.files?.[0] ?? null;
         if (upload) {
             setBanner(upload)
         }

@@ -1,10 +1,8 @@
-import PageHeader from "@/components/PageHeader.tsx";
 import {useLocation} from "react-router";
 import ProjectBoard from "@/pages/projects/ProjectItems.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
 import {useFeaturedProjectDetails} from "@/data/useProjectDetails.ts";
 import type {FeaturedProject} from "@/types/FeaturedProject.ts";
-import {Card, CardHeader} from "@/components/ui/card.tsx";
 import {Spinner} from "@/components/ui/spinner.tsx";
 import {Code2, GithubIcon} from "lucide-react";
 

@@ -1,10 +1,11 @@
 import axios from "axios";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import type {User} from "@/types/User.ts";
+import {apiBaseUrl} from "@/data/apiBaseUrl.ts";
 
 async function connectGithub(code : string, idToken : string) {
     const response = await axios.post(
-        `http://localhost:8080/api/github/oauth?code=${code}`,
+        `${apiBaseUrl}/github/oauth?code=${code}`,
         { },
         {
             headers: {
