@@ -1,1 +1,1 @@
-export const apiBaseUrl = "http://api.dsecbasecamp.app/api";
+export const apiBaseUrl = "https://api.dsecbasecamp.app/api";
