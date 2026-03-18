@@ -8,6 +8,13 @@ type FrequentlyAskedQuestion = {
     question: string;
     answer: string;
 }
+//"/undraw-collaboration.svg"
+const carouselImages : string[] = [
+    "/undraw-code-contribution.svg",
+    "/undraw-open-source-code.svg",
+    "/undraw-project-complete.svg",
+    "/undraw-social-media-carousel.svg",
+]
 
 const faq: FrequentlyAskedQuestion[] = [
     {
@@ -72,12 +79,12 @@ export default function HomePage () {
                     }}
                 >
                     <CarouselContent className="-ml-4">
-                        {Array.from({ length: 5 }).map((_, index) => (
+                        {carouselImages.map((image, index) => (
                             <CarouselItem key={index} className="pl-4 md:basis-[50%]">
                                 <div className="p-1">
                                     <Card className="overflow-hidden rounded p-2">
-                                        <CardContent className="flex aspect-video items-center justify-center bg-black rounded overflow-hidden">
-                                            <span className="text-white text-4xl font-semibold">{index}</span>
+                                        <CardContent className="flex aspect-video items-center justify-center rounded overflow-hidden">
+                                            <img className="h-full w-full overflow-hidden bg-cover" src={image} alt={"carousel image" + index}/>
                                         </CardContent>
                                     </Card>
                                 </div>
