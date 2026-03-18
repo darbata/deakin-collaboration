@@ -4,6 +4,7 @@ import {useAuth} from "react-oidc-context";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import type {ProjectItem} from "@/types/ProjectItem.ts";
 import useAuthenticatedUser from "@/data/useAuthenticatedUser.ts";
+import {toast} from "sonner";
 
 const claimIssue = async (token: string, projectId: string, issueNumber: number) => {
     return await axios.post(`${apiBaseUrl}/projects/featured/${projectId}/${issueNumber}`, {}, {
@@ -51,6 +52,10 @@ export default function useClaimIssue(projectId: string) {
 
             return { previous };
 
+        },
+
+        onError: () => {
+            toast.error("Make sure you connect your github first");
         },
 
         onSettled: () => {

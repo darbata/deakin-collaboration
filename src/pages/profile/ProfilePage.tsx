@@ -11,6 +11,7 @@ import {clientId} from "@/config/githubClientIdConfig.ts";
 import {useDisconnectGithub} from "@/data/useDisconnectGithub.ts";
 import {useAvatarUpload} from "@/data/useAvatarUpload.ts";
 import {useUpdateDisplayName} from "@/data/useUpdateDisplayName.ts";
+import SharedProjects from "@/pages/profile/SharedProjects.tsx";
 
 export default function ProfilePage() {
 
@@ -176,6 +177,7 @@ export default function ProfilePage() {
             <div className="flex w-full max-w-[900px]">
                 <Button onClick={updateUsername} hidden={!isEditing} disabled={userDisplayName == data.displayName} className="ml-auto self-baseline">Save Changes</Button>
             </div>
+            <SharedProjects />
         </section>
     )
 }

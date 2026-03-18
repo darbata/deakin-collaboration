@@ -12,7 +12,7 @@ export default function ProjectsPage() {
 
     const auth = useAuth()
     const token = auth.user?.id_token ?? "";
-    const {data, isLoading, isError} = useAuthenticatedUser(token);
+    const {data} = useAuthenticatedUser(token);
 
     const handleSubmitProjectBtnClick = () => {
         setOpen(!open)

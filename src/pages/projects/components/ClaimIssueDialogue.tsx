@@ -21,7 +21,6 @@ export default function ClaimIssueDialogue({open, onOpenChange, onConfirm}:
                     <DialogTitle>Are you sure?</DialogTitle>
                     <DialogDescription className="flex flex-col gap-1">
                         <span>Nice choice! Let's get you started. </span>
-                        <span>Is this your first time contributing? See the contribution guide here.</span>
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
