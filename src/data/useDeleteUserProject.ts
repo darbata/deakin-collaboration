@@ -28,7 +28,8 @@ export function useDeleteUserProject(idToken: string) {
             return {userProjects};
         },
 
-        onError: (err, projectId, context) => {
+        onError: (_err, _projectId, context) => {
+
             if (context?.userProjects) {
                 queryClient.setQueryData(queryKey, context.userProjects);
             }
