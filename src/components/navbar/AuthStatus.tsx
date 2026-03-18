@@ -24,6 +24,10 @@ export default function Profile() {
         isError
     } = useAuthenticatedUser(idToken);
 
+    const profile = auth.user?.profile as Record<string, any>;
+    const groups = profile?.["cognito:groups"] as string[] || [];
+    const isAdmin = groups.includes("ADMIN");
+
     if (!auth.isAuthenticated) return <Button onClick={() => auth.signinRedirect()}>Sign in</Button>;
     if (isLoading || isError) return <div className="flex items-center"><User /></div>;
 
@@ -56,6 +60,15 @@ export default function Profile() {
                 >
                     Sign Out
                 </DropdownMenuItem>
+                {
+                    isAdmin && (
+                        <DropdownMenuItem
+                            onClick={() => navigate("/projects/create")}
+                        >
+                            Admin
+                        </DropdownMenuItem>
+                    )
+                }
             </DropdownMenuContent>
         </DropdownMenu>
     )
