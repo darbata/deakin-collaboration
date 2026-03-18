@@ -3,6 +3,8 @@ import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/co
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel.tsx";
 import {Card, CardContent} from "@/components/ui/card.tsx";
 import {useNavigate} from "react-router-dom";
+import {useAuth} from "react-oidc-context";
+import {toast} from "sonner";
 
 type FrequentlyAskedQuestion = {
     question: string;
@@ -48,7 +50,16 @@ const faq: FrequentlyAskedQuestion[] = [
 
 export default function HomePage () {
 
+    const auth = useAuth();
     const navigate = useNavigate();
+
+    const handleViewActiveProjects = () => {
+        if (!auth.isAuthenticated) {
+            toast.message("Please sign in first");
+            return;
+        }
+        navigate("/projects");
+    }
 
     return (
         <>
@@ -62,8 +73,8 @@ export default function HomePage () {
                         </div>
                         <p>Join DSEC to access community projects with beginner-friendly tickets. Learn Git and Software Engineering in a low-stress environment.</p>
                         <div className="flex gap-2 w-fit">
-                            <Button onClick={() => window.location.href = "https://www.dsec.club"} variant="outline">Learn More About DSEC</Button>
-                            <Button onClick={() => navigate("/projects") } variant="default">View Active Projects</Button>
+                            <Button onClick={() => window.open("https://www.dsec.club", '_blank')?.focus()} variant="outline">Learn More About DSEC</Button>
+                            <Button onClick={handleViewActiveProjects} variant="default">View Active Projects</Button>
                         </div>
                     </div>
                     <div className="col-span-5 lg:flex justify-center items-center w-full hidden lg:">

@@ -12,6 +12,7 @@ import {DiscussionThreadPage} from "@/pages/discussions/DiscussionThreadPage.tsx
 import ProjectDashboardPage from "@/pages/projects/ProjectDashboardPage.tsx";
 import ProfilePage from "@/pages/profile/ProfilePage.tsx";
 import {CreateFeaturedProjectPage} from "@/pages/projects/CreateFeaturedProjectPage.tsx";
+import {Toaster} from "@/components/ui/sonner.tsx";
 
 function Layout() {
     return (
@@ -20,6 +21,7 @@ function Layout() {
             <main>
                 <Outlet />
             </main>
+            <Toaster />
             <Footer />
         </>
     )
