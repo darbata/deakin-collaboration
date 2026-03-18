@@ -13,6 +13,7 @@ import ProjectDashboardPage from "@/pages/projects/ProjectDashboardPage.tsx";
 import ProfilePage from "@/pages/profile/ProfilePage.tsx";
 import {CreateFeaturedProjectPage} from "@/pages/projects/CreateFeaturedProjectPage.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx";
+import ProtectedRoute from "@/ProtectedRoute.tsx";
 
 function Layout() {
     return (
@@ -32,45 +33,20 @@ const router = createBrowserRouter([
         path: "/",
         element: <Layout />,
         children: [
+            {index: true, Component: HomePage},
+            {path: "github", Component: GithubPage},
             {
-                index: true,
-                Component: HomePage,
-            },
-            {
-                path: "profile",
-                Component: ProfilePage
-            },
-            {
-                path: "projects",
-                Component: ProjectsPage,
-            },
-            {
-                path: "projects/:projectId",
-                Component: ProjectDashboardPage
-            },
-            {
-                path: "projects/create",
-                Component: CreateFeaturedProjectPage
-            },
-            {
-                path: "github",
-                Component: GithubPage
-            },
-            {
-                path: "discussions",
-                Component: DiscussionsPage
-            },
-            {
-                path: "discussions/:topic",
-                Component: UnitDetailsPage
-            },
-            {
-                path: "discussions/threads/:discussionId",
-                Component: DiscussionThreadPage
-            },
-            {
-                path: "events",
-                Component: EventsPage
+                element: <ProtectedRoute />,
+                children: [
+                    {path: "profile", Component: ProfilePage},
+                    {path: "projects", Component: ProjectsPage},
+                    {path: "projects/:projectId", Component: ProjectDashboardPage},
+                    {path: "projects/create", Component: CreateFeaturedProjectPage},
+                    {path: "discussions", Component: DiscussionsPage},
+                    {path: "discussions/:topic", Component: UnitDetailsPage},
+                    {path: "discussions/threads/:discussionId", Component: DiscussionThreadPage},
+                    {path: "events", Component: EventsPage},
+                ]
             }
         ],
     },
