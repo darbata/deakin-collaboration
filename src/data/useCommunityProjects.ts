@@ -20,6 +20,9 @@ export function useUserGithubRepos() {
             });
             return response.data as GithubRepository[];
         },
-        enabled: !!auth.user?.access_token
+        enabled: !!auth.user?.access_token,
+        onError: () => {
+
+        }
     });
 }

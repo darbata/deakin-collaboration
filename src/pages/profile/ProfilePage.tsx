@@ -58,8 +58,10 @@ export default function ProfilePage() {
         setUserDisplayName(() => (event.target.value));
     }
 
+    const githubRedirectUri = "http://localhost:5173/github"
+
     const redirectGithubAuth = () => {
-        const url = `https://github.com/login/oauth/authorize?client_id=${clientId}`
+        const url = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${githubRedirectUri}`
         window.location.href = url
     }
 

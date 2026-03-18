@@ -2,6 +2,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion.tsx";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel.tsx";
 import {Card, CardContent} from "@/components/ui/card.tsx";
+import {useNavigate} from "react-router-dom";
 
 type FrequentlyAskedQuestion = {
     question: string;
@@ -39,6 +40,9 @@ const faq: FrequentlyAskedQuestion[] = [
 ]
 
 export default function HomePage () {
+
+    const navigate = useNavigate();
+
     return (
         <>
             <section className="mt-16 lg:grid lg:grid-cols-12 w-full">
@@ -51,8 +55,8 @@ export default function HomePage () {
                         </div>
                         <p>Join DSEC to access community projects with beginner-friendly tickets. Learn Git and Software Engineering in a low-stress environment.</p>
                         <div className="flex gap-2 w-fit">
-                            <Button onClick={() => window.location.href = "https://www.dsec.club"} variant="outline">Learn More</Button>
-                            <Button variant="default">Sign Up</Button>
+                            <Button onClick={() => window.location.href = "https://www.dsec.club"} variant="outline">Learn More About DSEC</Button>
+                            <Button onClick={() => navigate("/projects") } variant="default">View Active Projects</Button>
                         </div>
                     </div>
                     <div className="col-span-5 lg:flex justify-center items-center w-full hidden lg:">

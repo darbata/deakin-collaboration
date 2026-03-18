@@ -1,7 +1,7 @@
 import {Button} from "@/components/ui/button";
 import PlusIcon from "@/components/icons/PlusIcon";
 
-export function ProjectPageHeader({handleClick, activeCategory} : {handleClick : () => void, activeCategory: string}){
+export function ProjectPageHeader({handleClick, activeCategory, showButton} : {handleClick : () => void, activeCategory: string, showButton: boolean}){
 
     return (
         <div className="flex justify-between items-center">
@@ -10,7 +10,7 @@ export function ProjectPageHeader({handleClick, activeCategory} : {handleClick :
                 <p className="text-muted-foreground">Contribute to DSEC projects or share your own with the community</p>
             </div>
             {
-                activeCategory === "community" &&
+                activeCategory === "community" && showButton &&
                 <Button className="h-10 py-3 px-2" onClick={handleClick}>
                     <PlusIcon width="16" height="16" fill="currentColor" />
                     <span>Submit Project</span>
